@@ -1,0 +1,138 @@
+/* ---------- 1. DESIGN TOKENS ---------- */
+:root {
+  /* Brand colors (given) */
+  --color-primary: #1E3A8A;      /* deep trust blue — nav, primary actions, headings */
+  --color-secondary: #16A34A;    /* community green — verified badges, secondary accents */
+  --color-accent: #F59E0B;       /* warm amber — sparing use, small highlights only */
+  --color-bg: #F8FAFC;           /* page background */
+ 
+  /* Derived neutrals */
+  --color-surface: #FFFFFF;      /* card backgrounds */
+  --color-text: #0F172A;         /* near-black, softened — headings & body */
+  --color-text-muted: #475569;   /* secondary text */
+  --color-border: #E2E8F0;
+ 
+  /* On-dark variants (for CTA band, footer) */
+  --color-on-dark: #F8FAFC;
+  --color-on-dark-muted: #CBD5E1;
+ 
+  /* Typography */
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Work Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+ 
+  /* Spacing scale */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+ 
+  /* Layout */
+  --container-width: 1200px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+ 
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.12);
+ 
+  /* Motion */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+}
+ 
+/* ---------- 2. RESET & BASE ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+ 
+html {
+  scroll-behavior: smooth;
+}
+ 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+ 
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+ 
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--color-text);
+}
+ 
+h1 { font-size: clamp(2.25rem, 4vw + 1rem, 3.5rem); font-weight: 600; }
+h2 { font-size: clamp(1.75rem, 2.5vw + 1rem, 2.5rem); }
+h3 { font-size: 1.15rem; font-weight: 600; }
+ 
+p {
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--color-text-muted);
+}
+ 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+ 
+ul, ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+ 
+img {
+  max-width: 100%;
+  display: block;
+}
+ 
+/* Visible focus state for keyboard users — kept even where we style away
+   default outlines elsewhere */
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+ 
+/* ---------- 3. LAYOUT UTILITIES ---------- */
+.section-heading {
+  max-width: 640px;
+  margin: 0 auto var(--space-xl) auto;
+  text-align: center;
+}
+ 
+.section-heading p {
+  font-size: 1.05rem;
+}
+ 
+/* Generic horizontal padding wrapper used by full-width sections */
+.hero,
+.categories,
+.why,
+.how-it-works,
+.featured-workers,
+.cta,
+.site-footer,
+.navbar {
+  padding-left: max(var(--space-md), calc((100% - var(--container-width)) / 2));
+  padding-right: max(var(--space-md), calc((100% - var(--container-width)) / 2));
+}

@@ -202,3 +202,123 @@ img {
 .btn--ghost:hover {
   color: var(--color-primary);
 }
+
+/* ---------- 5. NAVIGATION ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+ 
+.navbar {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-sm);
+  padding-bottom: var(--space-sm);
+}
+ 
+.navbar__logo {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+ 
+.navbar__toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs);
+}
+ 
+.navbar__toggle-bar {
+  width: 24px;
+  height: 2px;
+  background-color: var(--color-text);
+  border-radius: 2px;
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+ 
+.navbar__menu {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+ 
+.navbar__links {
+  display: flex;
+  gap: var(--space-md);
+}
+ 
+.navbar__links a {
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: color var(--transition-fast);
+}
+ 
+.navbar__links a:hover {
+  color: var(--color-primary);
+}
+ 
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+ 
+/* Mobile nav: collapse links behind a toggle under ~840px */
+@media (max-width: 840px) {
+  .navbar__toggle {
+    display: flex;
+  }
+ 
+  .navbar__menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-md);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-base);
+  }
+ 
+  /* JS toggles this class in Session E to expand/collapse the menu */
+  .navbar__menu.is-open {
+    max-height: 480px;
+  }
+ 
+  .navbar__links {
+    flex-direction: column;
+    gap: 0;
+    padding: var(--space-sm) var(--space-md) 0 var(--space-md);
+  }
+ 
+  .navbar__links a {
+    display: block;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+ 
+  .navbar__actions {
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--space-sm) var(--space-md) var(--space-md) var(--space-md);
+  }
+ 
+  .navbar__actions .btn {
+    width: 100%;
+  }
+}

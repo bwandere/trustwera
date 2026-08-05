@@ -663,3 +663,28 @@ img {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- 11. CALL TO ACTION ---------- */
+.cta {
+  max-width: none;
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-2xl);
+  padding-bottom: var(--space-2xl);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #142a63 100%);
+  text-align: center;
+}
+ 
+.cta h2 {
+  color: var(--color-on-dark);
+  max-width: 620px;
+  margin-left: auto;
+  margin-right: auto;
+}
+ 
+.cta__actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-top: var(--space-md);
+}

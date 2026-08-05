@@ -503,3 +503,74 @@ img {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- 9. HOW IT WORKS ---------- */
+.how-it-works {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding-top: var(--space-2xl);
+  padding-bottom: var(--space-2xl);
+}
+ 
+.timeline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--space-md);
+}
+ 
+.timeline__step {
+  flex: 1;
+  max-width: 260px;
+  text-align: center;
+  position: relative;
+}
+ 
+.timeline__marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto var(--space-sm) auto;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: var(--color-on-dark);
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+ 
+/* Connecting line between steps, drawn as a pseudo-element rather than
+   a separate div — keeps the HTML markup free of purely decorative elements */
+.timeline__step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 28px;
+  left: calc(50% + 28px + var(--space-md));
+  width: calc(100% - 56px - var(--space-md));
+  height: 2px;
+  background-color: var(--color-border);
+}
+ 
+.timeline__step h3 {
+  margin-bottom: var(--space-xs);
+}
+ 
+.timeline__step p {
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+ 
+@media (max-width: 700px) {
+  .timeline {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xl);
+  }
+ 
+  .timeline__step:not(:last-child)::after {
+    content: none; /* connecting line only makes sense in the horizontal layout */
+  }
+}
+ 

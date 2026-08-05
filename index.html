@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrustWera — Find Trusted Local Workers Near You</title>
+  <meta name="description" content="TrustWera connects verified local skilled and casual workers with households and small businesses that need reliable help.">
+
+  <!-- Stylesheet will be built in Session B. Linked now so the file is wired up ahead of time. -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="site-header">
+    <nav class="navbar" aria-label="Main navigation">
+      <a href="/" class="navbar__logo">TrustWera</a>
+
+      <button class="navbar__toggle" aria-expanded="false" aria-controls="navbar-menu" aria-label="Open menu">
+        <span class="navbar__toggle-bar"></span>
+        <span class="navbar__toggle-bar"></span>
+        <span class="navbar__toggle-bar"></span>
+      </button>
+
+      <div class="navbar__menu" id="navbar-menu">
+        <ul class="navbar__links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/workers">Find Workers</a></li>
+          <li><a href="/become-a-worker">Become a Worker</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+
+        <div class="navbar__actions">
+          <a href="/login" class="btn btn--ghost">Login</a>
+          <a href="/register" class="btn btn--outline">Register</a>
+          <a href="/workers" class="btn btn--primary">Hire a Worker</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="hero__content">
+        <p class="hero__eyebrow">Every worker checked before they're listed</p>
+        <h1 id="hero-heading">Find Trusted Local Workers Near You</h1>
+        <p class="hero__subheading">
+          Search verified electricians, cleaners, painters, mechanics, gardeners, security guards and more —
+          right in your neighborhood.
+        </p>
+        <div class="hero__actions">
+          <a href="/workers" class="btn btn--primary btn--large">Hire Someone</a>
+          <a href="/become-a-worker" class="btn btn--outline btn--large">Become a Worker</a>
+        </div>
+      </div>
+      <div class="hero__media" role="img" aria-label="Illustration of local tradespeople at work">
+        <!-- Hero illustration placeholder, replaced with real artwork in a later pass -->
+        <div class="hero__media-placeholder"></div>
+      </div>
+    </section>
+
+    <!-- ============ SERVICE CATEGORIES ============ -->
+    <section class="categories" aria-labelledby="categories-heading">
+      <div class="section-heading">
+        <h2 id="categories-heading">Browse by Trade</h2>
+        <p>Skilled and casual workers, ready to help nearby.</p>
+      </div>
+
+      <ul class="category-grid">
+        <li class="category-card">
+          <span class="category-card__icon" aria-hidden="true"></span>
+          <h3>Electricians</h3>
+          <p>Wiring, repairs and installations from checked local pros.</p>
+        </li>
+        <li class="category-card">
+          <span class="category-card__icon" aria-hidden="true"></span>
+          <h3>Plumbers</h3>
+          <p>Leaks, blockages and fittings handled quickly.</p>
+        </li>
+        <li class="category-card">
+          <span class="category-card__icon" aria-hidden="true"></span>
+          <h3>Carpenters</h3>
+          <p>Furniture, fittings and repairs built to last.</p>
+        </li>
+        <li class="category-card">
+          <span class="category-card__icon" aria-hidden="true"></span>
+          <h3>Painters</h3>
+          <p>Interior and exterior painting, done neatly.</p>
+        </li>
+        <li class="category-card">
+          <span class="category-card__icon" aria-hidden="true"></span>
+          <h3>Cleaners</h3>
+          <p>Homes, offices and one-off deep cleans.</p>
+        </li>
+        <li class="category-card">
+          <span class="category-card__icon" aria-hidden="true"></span>
+          <h3>Gardeners</h3>
+          <p>Lawns, hedges and compounds kept tidy.</p>
+        </li>
+        <li class="category-card">
+          <span class="category-card__icon" aria-hidden="true"></span>
+          <h3>Mechanics</h3>
+          <p>Car and motorbike repairs, on call.</p>
+        </li>
+        <li class="category-card">
+          <span class="category-card__icon" aria-hidden="true"></span>
+          <h3>Security Guards</h3>
+          <p>Reliable coverage for homes and small businesses.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ============ WHY TRUSTWERA ============ -->
+    <section class="why" aria-labelledby="why-heading">
+      <div class="section-heading">
+        <h2 id="why-heading">Why TrustWera</h2>
+      </div>
+
+      <ul class="feature-grid">
+        <li class="feature-card">
+          <h3>Verified Workers</h3>
+          <p>Every profile is checked by our team before it goes live, so you know who you're contacting.</p>
+        </li>
+        <li class="feature-card">
+          <h3>Trusted Community</h3>
+          <p>Built for neighborhoods, not strangers on the internet — workers and clients from the same area.</p>
+        </li>
+        <li class="feature-card">
+          <h3>Fast Hiring</h3>
+          <p>Search, compare and contact a worker directly in minutes, no back-and-forth required.</p>
+        </li>
+        <li class="feature-card">
+          <h3>Local Opportunities</h3>
+          <p>Workers get found by people nearby who actually need their skills, today.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="how-it-works" aria-labelledby="how-heading">
+      <div class="section-heading">
+        <h2 id="how-heading">How It Works</h2>
+      </div>
+
+      <ol class="timeline">
+        <li class="timeline__step">
+          <span class="timeline__marker">1</span>
+          <h3>Search</h3>
+          <p>Tell us what you need and where you are.</p>
+        </li>
+        <li class="timeline__step">
+          <span class="timeline__marker">2</span>
+          <h3>Choose</h3>
+          <p>Compare verified profiles and pick who fits.</p>
+        </li>
+        <li class="timeline__step">
+          <span class="timeline__marker">3</span>
+          <h3>Contact</h3>
+          <p>Reach out directly and get the work started.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============ FEATURED WORKERS PREVIEW ============ -->
+    <section class="featured-workers" aria-labelledby="featured-heading">
+      <div class="section-heading">
+        <h2 id="featured-heading">Featured Workers</h2>
+        <p>A sample of the neighbors already on TrustWera.</p>
+      </div>
+
+      <ul class="worker-grid">
+        <li class="worker-card">
+          <div class="worker-card__photo" role="img" aria-label="Profile photo placeholder"></div>
+          <span class="worker-card__badge">Verified</span>
+          <h3>Worker Name</h3>
+          <p class="worker-card__role">Occupation</p>
+          <p class="worker-card__location">Location</p>
+          <p class="worker-card__availability">Available Today</p>
+          <a href="/workers/1" class="btn btn--outline btn--small">View Profile</a>
+        </li>
+        <li class="worker-card">
+          <div class="worker-card__photo" role="img" aria-label="Profile photo placeholder"></div>
+          <span class="worker-card__badge">Verified</span>
+          <h3>Worker Name</h3>
+          <p class="worker-card__role">Occupation</p>
+          <p class="worker-card__location">Location</p>
+          <p class="worker-card__availability">Available This Week</p>
+          <a href="/workers/2" class="btn btn--outline btn--small">View Profile</a>
+        </li>
+        <li class="worker-card">
+          <div class="worker-card__photo" role="img" aria-label="Profile photo placeholder"></div>
+          <span class="worker-card__badge">Verified</span>
+          <h3>Worker Name</h3>
+          <p class="worker-card__role">Occupation</p>
+          <p class="worker-card__location">Location</p>
+          <p class="worker-card__availability">Available Today</p>
+          <a href="/workers/3" class="btn btn--outline btn--small">View Profile</a>
+        </li>
+        <li class="worker-card">
+          <div class="worker-card__photo" role="img" aria-label="Profile photo placeholder"></div>
+          <span class="worker-card__badge">Verified</span>
+          <h3>Worker Name</h3>
+          <p class="worker-card__role">Occupation</p>
+          <p class="worker-card__location">Location</p>
+          <p class="worker-card__availability">Available This Week</p>
+          <a href="/workers/4" class="btn btn--outline btn--small">View Profile</a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ============ CALL TO ACTION ============ -->
+    <section class="cta" aria-labelledby="cta-heading">
+      <h2 id="cta-heading">Ready to Find Trusted Local Workers?</h2>
+      <div class="cta__actions">
+        <a href="/workers" class="btn btn--primary btn--large">Hire Someone</a>
+        <a href="/become-a-worker" class="btn btn--outline-light btn--large">Join as Worker</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="site-footer__brand">
+      <p class="site-footer__logo">TrustWera</p>
+      <p class="site-footer__tagline">Trusted Hands. Local Opportunities.</p>
+    </div>
+
+    <nav class="site-footer__links" aria-label="Footer navigation">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/workers">Find Workers</a></li>
+        <li><a href="/become-a-worker">Become a Worker</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-footer__contact">
+      <h3>Contact</h3>
+      <p><a href="mailto:hello@trustwera.example">hello@trustwera.example</a></p>
+    </div>
+
+    <div class="site-footer__social">
+      <h3>Follow</h3>
+      <ul class="social-icons">
+        <li><a href="#" aria-label="TrustWera on Facebook">FB</a></li>
+        <li><a href="#" aria-label="TrustWera on Instagram">IG</a></li>
+        <li><a href="#" aria-label="TrustWera on X">X</a></li>
+      </ul>
+    </div>
+
+    <p class="site-footer__copyright">&copy; 2026 TrustWera. Built for local communities.</p>
+  </footer>
+
+  <!-- Script will be built in Session E. -->
+  <script src="assets/js/script.js" defer></script>
+</body>
+</html>

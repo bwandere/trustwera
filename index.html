@@ -9,54 +9,56 @@
   <!-- Google Fonts: Fraunces (display, for warmth/character in headings) + Work Sans (body, clean and legible) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" as="style">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
+<a href="#main-content" class="skip-to-content">Skip to main content</a>
+
   <!-- ============ NAVIGATION ============ -->
   <header class="site-header">
     <nav class="navbar" aria-label="Main navigation">
-      <a href="/" class="navbar__logo">TrustWera</a>
+      <a href="#" class="navbar__logo">TrustWera</a>
 
       <button class="navbar__toggle" aria-expanded="false" aria-controls="navbar-menu" aria-label="Open menu">
-        <span class="navbar__toggle-bar"></span>
-        <span class="navbar__toggle-bar"></span>
-        <span class="navbar__toggle-bar"></span>
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
       </button>
 
-      <div class="navbar__menu" id="navbar-menu">
-        <ul class="navbar__links">
-          <li><a href="/">Home</a></li>
-          <li><a href="/workers">Find Workers</a></li>
-          <li><a href="/become-a-worker">Become a Worker</a></li>
-          <li><a href="/about">About</a></li>
+      <div class="navbar__menu" id="navbar-menu" role="navigation">
+        <ul class="navbar__links" role="menubar">
+          <li role="none"><a href="#" role="menuitem">Home</a></li>
+          <li role="none"><a href="#" role="menuitem">Find Workers</a></li>
+          <li role="none"><a href="#" role="menuitem">Become a Worker</a></li>
+          <li role="none"><a href="#" role="menuitem">About</a></li>
         </ul>
 
         <div class="navbar__actions">
-          <a href="/login" class="btn btn--ghost">Login</a>
-          <a href="/register" class="btn btn--outline">Register</a>
-          <a href="/workers" class="btn btn--primary">Hire a Worker</a>
+          <a href="#" class="btn btn--ghost">Login</a>
+          <a href="#" class="btn btn--outline">Register</a>
+          <a href="#" class="btn btn--primary">Hire a Worker</a>
         </div>
       </div>
     </nav>
   </header>
 
-  <main>
+  <main id="main-content">
 
     <!-- ============ HERO ============ -->
     <section class="hero" aria-labelledby="hero-heading">
       <div class="hero__content">
-        <p class="hero__eyebrow">Every worker checked before they're listed</p>
+        <p class="hero__eyebrow">✓ Every worker checked before they're listed</p>
         <h1 id="hero-heading">Find Trusted Local Workers Near You</h1>
         <p class="hero__subheading">
-          Search verified electricians, cleaners, painters, mechanics, gardeners, security guards and more —
-          right in your neighborhood.
+          Connect with verified electricians, plumbers, cleaners, gardeners, painters, mechanics, security guards and many more in your community.
         </p>
         <div class="hero__actions">
-          <a href="/workers" class="btn btn--primary btn--large">Hire Someone</a>
-          <a href="/become-a-worker" class="btn btn--outline btn--large">Become a Worker</a>
+          <a href="#" class="btn btn--primary btn--large">Hire Someone</a>
+          <a href="#" class="btn btn--outline btn--large">Become a Worker</a>
         </div>
       </div>
       <div class="hero__media" role="img" aria-label="Illustration of local tradespeople at work">
@@ -65,6 +67,53 @@
       </div>
     </section>
 
+    <!-- ============ SEARCH FILTERS (NEW) ============ -->
+<section class="search-filters" aria-labelledby="search-heading">
+  <div class="search-filters__content">
+    <h2 id="search-heading" class="search-filters__title">What do you need help with today?</h2>
+    <form class="search-filters__form" role="search" aria-label="Search for workers">
+      <div class="search-filters__group">
+        <label for="service-needed" class="visually-hidden">Service Needed</label>
+        <select id="service-needed" class="search-filters__select" aria-label="Select service type">
+          <option value="">Choose a service</option>
+          <option value="electrician">Electrician</option>
+          <option value="plumber">Plumber</option>
+          <option value="cleaner">Cleaner</option>
+          <option value="carpenter">Carpenter</option>
+          <option value="painter">Painter</option>
+          <option value="gardener">Gardener</option>
+          <option value="mechanic">Mechanic</option>
+          <option value="security">Security Guard</option>
+        </select>
+      </div>
+      
+      <div class="search-filters__group">
+        <label for="location" class="visually-hidden">Location</label>
+        <select id="location" class="search-filters__select" aria-label="Select location">
+          <option value="">Choose a location</option>
+          <option value="kisumu">Kisumu</option>
+          <option value="nairobi">Nairobi</option>
+          <option value="mombasa">Mombasa</option>
+          <option value="nakuru">Nakuru</option>
+        </select>
+      </div>
+      
+      <div class="search-filters__group">
+        <label for="availability" class="visually-hidden">Availability</label>
+        <select id="availability" class="search-filters__select" aria-label="Select availability">
+          <option value="">Any Time</option>
+          <option value="today">Available Today</option>
+          <option value="this-week">Available This Week</option>
+        </select>
+      </div>
+      
+      <button type="submit" class="btn btn--primary btn--large search-filters__submit">
+        Find Workers
+      </button>
+    </form>
+  </div>
+</section>
+
     <!-- ============ SERVICE CATEGORIES ============ -->
     <section class="categories" aria-labelledby="categories-heading">
       <div class="section-heading">
@@ -72,46 +121,54 @@
         <p>Skilled and casual workers, ready to help nearby.</p>
       </div>
 
-      <ul class="category-grid">
-        <li class="category-card">
+      <ul class="category-grid" role="list">
+        <li class="category-card" role="listitem">
           <span class="category-card__icon" aria-hidden="true"></span>
           <h3>Electricians</h3>
-          <p>Wiring, repairs and installations from checked local pros.</p>
+           <p class="category-card__count">38 workers nearby</p>
+      <a href="/workers?trade=electrician" class="category-card__link">Quick Browse →</a>>
         </li>
-        <li class="category-card">
+        <li class="category-card" role="listitem">
           <span class="category-card__icon" aria-hidden="true"></span>
           <h3>Plumbers</h3>
-          <p>Leaks, blockages and fittings handled quickly.</p>
+          <p class="category-card__count">27 workers nearby</p>
+      <a href="/workers?trade=plumber" class="category-card__link">Quick Browse →</a>
         </li>
-        <li class="category-card">
+        <li class="category-card" role="listitem">
           <span class="category-card__icon" aria-hidden="true"></span>
           <h3>Carpenters</h3>
-          <p>Furniture, fittings and repairs built to last.</p>
+          <p class="category-card__count">22 workers nearby</p>
+      <a href="/workers?trade=carpenter" class="category-card__link">Quick Browse →</a>
         </li>
-        <li class="category-card">
+        <li class="category-card" role="listitem">
           <span class="category-card__icon" aria-hidden="true"></span>
           <h3>Painters</h3>
-          <p>Interior and exterior painting, done neatly.</p>
+          <p class="category-card__count">19 workers nearby</p>
+      <a href="/workers?trade=painter" class="category-card__link">Quick Browse →</a>
         </li>
-        <li class="category-card">
+        <li class="category-card" role="listitem">
           <span class="category-card__icon" aria-hidden="true"></span>
           <h3>Cleaners</h3>
-          <p>Homes, offices and one-off deep cleans.</p>
+          <p class="category-card__count">45 workers nearby</p>
+      <a href="/workers?trade=cleaner" class="category-card__link">Quick Browse →</a>
         </li>
-        <li class="category-card">
+        <li class="category-card" role="listitem">
           <span class="category-card__icon" aria-hidden="true"></span>
           <h3>Gardeners</h3>
-          <p>Lawns, hedges and compounds kept tidy.</p>
+          <p class="category-card__count">16 workers nearby</p>
+      <a href="/workers?trade=gardener" class="category-card__link">Quick Browse →</a>
         </li>
-        <li class="category-card">
+        <li class="category-card" role="listitem">
           <span class="category-card__icon" aria-hidden="true"></span>
           <h3>Mechanics</h3>
-          <p>Car and motorbike repairs, on call.</p>
+         <p class="category-card__count">24 workers nearby</p>
+      <a href="/workers?trade=mechanic" class="category-card__link">Quick Browse →</a>
         </li>
-        <li class="category-card">
+        <li class="category-card" role="listitem">
           <span class="category-card__icon" aria-hidden="true"></span>
           <h3>Security Guards</h3>
-          <p>Reliable coverage for homes and small businesses.</p>
+          <p class="category-card__count">31 workers nearby</p>
+      <a href="/workers?trade=security" class="category-card__link">Quick Browse →</a>
         </li>
       </ul>
     </section>
@@ -122,20 +179,20 @@
         <h2 id="why-heading">Why TrustWera</h2>
       </div>
 
-      <ul class="feature-grid">
-        <li class="feature-card">
+      <ul class="feature-grid" role="list">
+        <li class="feature-card" role="listitem">
           <h3>Verified Workers</h3>
           <p>Every profile is checked by our team before it goes live, so you know who you're contacting.</p>
         </li>
-        <li class="feature-card">
+        <li class="feature-card" role="listitem">
           <h3>Trusted Community</h3>
           <p>Built for neighborhoods, not strangers on the internet — workers and clients from the same area.</p>
         </li>
-        <li class="feature-card">
+        <li class="feature-card" role="listitem">
           <h3>Fast Hiring</h3>
           <p>Search, compare and contact a worker directly in minutes, no back-and-forth required.</p>
         </li>
-        <li class="feature-card">
+        <li class="feature-card" role="listitem">
           <h3>Local Opportunities</h3>
           <p>Workers get found by people nearby who actually need their skills, today.</p>
         </li>
@@ -148,19 +205,19 @@
         <h2 id="how-heading">How It Works</h2>
       </div>
 
-      <ol class="timeline">
-        <li class="timeline__step">
-          <span class="timeline__marker">1</span>
+      <ol class="timeline" role="list">
+        <li class="timeline__step" role="listitem">
+          <span class="timeline__marker" aria-hidden="true">1</span>
           <h3>Search</h3>
           <p>Tell us what you need and where you are.</p>
         </li>
-        <li class="timeline__step">
-          <span class="timeline__marker">2</span>
+        <li class="timeline__step" role="listitem">
+          <span class="timeline__marker" aria-hidden="true">2</span>
           <h3>Choose</h3>
           <p>Compare verified profiles and pick who fits.</p>
         </li>
-        <li class="timeline__step">
-          <span class="timeline__marker">3</span>
+        <li class="timeline__step" role="listitem">
+          <span class="timeline__marker" aria-hidden="true">3</span>
           <h3>Contact</h3>
           <p>Reach out directly and get the work started.</p>
         </li>
@@ -174,42 +231,42 @@
         <p>A sample of the neighbors already on TrustWera.</p>
       </div>
 
-      <ul class="worker-grid">
-        <li class="worker-card">
+      <ul class="worker-grid" role="list">
+        <li class="worker-card" role="listitem">
           <div class="worker-card__photo" role="img" aria-label="Profile photo placeholder"></div>
           <span class="worker-card__badge">Verified</span>
           <h3>Worker Name</h3>
           <p class="worker-card__role">Occupation</p>
           <p class="worker-card__location">Location</p>
           <p class="worker-card__availability">Available Today</p>
-          <a href="/workers/1" class="btn btn--outline btn--small">View Profile</a>
+          <a href="/workers/1" class="btn btn--outline btn--small" aria-label="View worker Name's profile">View Profile</a>
         </li>
-        <li class="worker-card">
+        <li class="worker-card" role="listitem">
           <div class="worker-card__photo" role="img" aria-label="Profile photo placeholder"></div>
           <span class="worker-card__badge">Verified</span>
           <h3>Worker Name</h3>
           <p class="worker-card__role">Occupation</p>
           <p class="worker-card__location">Location</p>
           <p class="worker-card__availability">Available This Week</p>
-          <a href="/workers/2" class="btn btn--outline btn--small">View Profile</a>
+          <a href="/workers/2" class="btn btn--outline btn--small" aria-label="View worker Name's profile">View Profile</a>
         </li>
-        <li class="worker-card">
+        <li class="worker-card" role="listitem">
           <div class="worker-card__photo" role="img" aria-label="Profile photo placeholder"></div>
           <span class="worker-card__badge">Verified</span>
           <h3>Worker Name</h3>
           <p class="worker-card__role">Occupation</p>
           <p class="worker-card__location">Location</p>
           <p class="worker-card__availability">Available Today</p>
-          <a href="/workers/3" class="btn btn--outline btn--small">View Profile</a>
+          <a href="/workers/3" class="btn btn--outline btn--small" aria-label="View worker Name's profile">View Profile</a>
         </li>
-        <li class="worker-card">
+        <li class="worker-card" role="listitem">
           <div class="worker-card__photo" role="img" aria-label="Profile photo placeholder"></div>
           <span class="worker-card__badge">Verified</span>
           <h3>Worker Name</h3>
           <p class="worker-card__role">Occupation</p>
           <p class="worker-card__location">Location</p>
           <p class="worker-card__availability">Available This Week</p>
-          <a href="/workers/4" class="btn btn--outline btn--small">View Profile</a>
+          <a href="/workers/4" class="btn btn--outline btn--small" aria-label="View worker Name's profile">View Profile</a>
         </li>
       </ul>
     </section>
@@ -226,7 +283,7 @@
   </main>
 
   <!-- ============ FOOTER ============ -->
-  <footer class="site-footer">
+  <footer class="site-footer" role="contentinfo" aria-label="Site footer">
     <div class="site-footer__brand">
       <p class="site-footer__logo">TrustWera</p>
       <p class="site-footer__tagline">Trusted Hands. Local Opportunities.</p>

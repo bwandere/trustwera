@@ -1066,3 +1066,25 @@ textarea:focus-visible {
     justify-content: center;
   }
 }
+/* ---------- 13. SCROLL REVEAL ---------- */
+/* .reveal is added by JS to opt elements into the animation — kept
+   separate from the base card classes so the page is still fully
+   visible/usable with JS disabled (progressive enhancement). */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 500ms ease, transform 500ms ease;
+}
+ 
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+ 
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

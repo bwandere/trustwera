@@ -407,45 +407,49 @@ textarea:focus-visible {
 /* ---------- 6. HERO ---------- */
 
 .hero {
+  position: relative;
   max-width: var(--container-width);
   width: 100%;
   margin: 0 auto;
-
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-
-  gap: clamp(3rem, 6vw, 6rem);
-
   padding-top: var(--space-2xl);
   padding-bottom: var(--space-2xl);
-
-  min-height: calc(100vh - 72px);
+  padding-left: var(--space-md);
+  padding-right: var(--space-md);
+  min-height: 540px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .hero__content {
+  position: relative;
+  z-index: 2;
   max-width: 560px;
 }
 
 .hero__media {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 1;
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-end;
 }
 
-.hero__media-placeholder {
+.hero__image {
   width: 100%;
-  max-width: 500px;
-  aspect-ratio: 4 / 3;
-  border-radius: var(--radius-lg);
-
-  background: linear-gradient(
-    135deg,
-    var(--color-primary),
-    var(--color-secondary)
-  );
-
-  box-shadow: var(--shadow-lg);
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: bottom center;
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  display: block;
 }
 
 .hero__content h1{
@@ -468,8 +472,9 @@ textarea:focus-visible {
 /* ---------- DESKTOP HERO FIXES ---------- */
 @media (min-width: 1200px) {
   .hero {
-    grid-template-columns: 1.05fr .95fr;
-    gap: 6rem;
+    min-height: 580px;
+    padding-top: var(--space-3xl);
+    padding-bottom: var(--space-2xl);
   }
   
   .hero__content h1 {
@@ -479,21 +484,23 @@ textarea:focus-visible {
   .hero__subheading {
     font-size: 1.2rem;
   }
-  
-  .hero__media-placeholder {
-   max-width:560px;
-  }
 }
 
 @media (max-width: 900px) {
   .hero {
-    grid-template-columns: 1fr;
+    min-height: auto;
     padding-top: var(--space-xl);
     padding-bottom: var(--space-xl);
     text-align: center;
     gap: var(--space-lg);
   }
  
+  .hero__content {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .hero__subheading {
     margin-left: auto;
     margin-right: auto;
@@ -504,7 +511,18 @@ textarea:focus-visible {
   }
  
   .hero__media {
-    order: -1;
+    position: relative;
+    width: 100%;
+    margin-top: var(--space-md);
+    order: 2;
+    overflow: hidden;
+  }
+
+  .hero__image {
+    width: 100%;
+    max-width: 100%;
+    opacity: 0.35;
+    margin: 0 auto;
   }
 
   .hero__highlight {
@@ -1087,4 +1105,231 @@ textarea:focus-visible {
     transform: none;
     transition: none;
   }
+}
+
+/* ---------- 14. FIND WORKERS PAGE ---------- */
+.workers-page-main {
+  padding-bottom: var(--space-3xl);
+  min-height: calc(100vh - 72px - 300px);
+}
+
+.workers-container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: var(--space-2xl) var(--space-md) var(--space-3xl);
+}
+
+.workers-page-header {
+  margin-bottom: var(--space-xl);
+  text-align: center;
+}
+
+.workers-page-header h1 {
+  font-size: clamp(2rem, 3vw + 1rem, 3.2rem);
+  margin-bottom: var(--space-xs);
+}
+
+.workers-page-header p {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+  color: var(--color-text-muted);
+}
+
+/* Filter Bar */
+.workers-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  align-items: flex-end;
+  background: var(--color-surface);
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  margin-bottom: var(--space-xl);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-group__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.filter-group__control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.filter-group__control:focus {
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+}
+
+.filter-group__select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23475569' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+.filter-group--checkbox {
+  flex: 0 0 auto;
+  min-width: auto;
+  justify-content: flex-end;
+}
+
+.filter-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-text);
+  min-height: 46px;
+  user-select: none;
+}
+
+.filter-checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.filter-group--submit {
+  flex: 0 0 auto;
+  min-width: auto;
+}
+
+.filter-submit-btn {
+  height: 46px;
+  padding: 0 1.75rem;
+}
+
+@media (max-width: 840px) {
+  .workers-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--space-md);
+  }
+
+  .filter-group {
+    min-width: 100%;
+  }
+
+  .filter-group--checkbox {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .filter-submit-btn {
+    width: 100%;
+  }
+}
+
+/* Results Summary */
+.workers-results-summary {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-lg);
+  padding: 0 var(--space-xs);
+}
+
+/* Worker Card Enhancements */
+.worker-card__badge--verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #15803d;
+  background-color: #dcfce7;
+  border-radius: 9999px;
+  border: 1px solid #bbf7d0;
+  margin-bottom: var(--space-md);
+}
+
+.worker-card__badge-placeholder {
+  height: 24px;
+  margin-bottom: var(--space-md);
+}
+
+.worker-card__photo img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.worker-card__availability--available {
+  color: var(--color-secondary);
+  font-weight: 600;
+}
+
+.worker-card__availability--unavailable {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+/* Empty & Error State Blocks */
+.workers-state-block {
+  text-align: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2xl) var(--space-md);
+  max-width: 540px;
+  margin: var(--space-xl) auto;
+  box-shadow: var(--shadow-sm);
+}
+
+.workers-state-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-md);
+  line-height: 1;
+}
+
+.workers-state-block h2 {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-xs);
+}
+
+.workers-state-block p {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  margin-bottom: var(--space-lg);
+  line-height: 1.6;
+}
+
+.workers-state-block .btn {
+  min-width: 160px;
+}
+
+/* Hidden Utility */
+[hidden] {
+  display: none !important;
 }

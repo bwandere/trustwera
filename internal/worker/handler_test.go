@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -272,6 +273,36 @@ func TestHandler_Create(t *testing.T) {
 		}
 		if resp["error"] != "failed to register worker" {
 			t.Errorf("expected generic error message, got %q", resp["error"])
+		}
+	})
+
+	t.Run("returns 409 Conflict when worker profile already exists for user", func(t *testing.T) {
+		repo := &mockRepository{
+			createFunc: func(ctx context.Context, profile *WorkerProfile, skillIDs []int64) (int64, error) {
+				return 0, fmt.Errorf("%w: failed to insert worker profile", ErrDuplicateProfile)
+			},
+		}
+		handler := NewHandler(NewService(repo))
+
+		body := `{
+			"user_id": 1,
+			"location_area": "Kilimani",
+			"skill_ids": [1]
+		}`
+		req := httptest.NewRequest(http.MethodPost, "/api/workers", bytes.NewBufferString(body))
+		rec := httptest.NewRecorder()
+
+		handler.Create(rec, req)
+
+		if rec.Code != http.StatusConflict {
+			t.Fatalf("expected status 409, got %d", rec.Code)
+		}
+		var resp map[string]string
+		if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+			t.Fatalf("failed to decode response: %v", err)
+		}
+		if resp["error"] != "a worker profile already exists for this user" {
+			t.Errorf("expected 'a worker profile already exists for this user', got %q", resp["error"])
 		}
 	})
 }

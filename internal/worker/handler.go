@@ -75,6 +75,10 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 			writeError(w, http.StatusBadRequest, err.Error())
 			return
 		}
+		if errors.Is(err, ErrDuplicateProfile) {
+			writeError(w, http.StatusConflict, "a worker profile already exists for this user")
+			return
+		}
 		log.Printf("failed to register worker: %v", err)
 		writeError(w, http.StatusInternalServerError, "failed to register worker")
 		return

@@ -6,11 +6,15 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 // ErrNotFound is returned when a requested worker profile does not exist.
 var ErrNotFound = errors.New("worker profile not found")
+
+// ErrDuplicateProfile is returned when a worker profile already exists for a user.
+var ErrDuplicateProfile = errors.New("worker profile already exists for this user")
 
 // WorkerFilters represents optional query filters for listing worker profiles.
 type WorkerFilters struct {
@@ -66,6 +70,12 @@ func (r *postgresRepository) Create(ctx context.Context, profile *WorkerProfile,
 		profile.ProfilePhotoURL,
 	).Scan(&profileID, &profile.CreatedAt, &profile.UpdatedAt)
 	if err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
+			if pgErr.ConstraintName == "worker_profiles_user_id_key" || strings.Contains(pgErr.Detail, "user_id") {
+				return 0, fmt.Errorf("%w: %w", ErrDuplicateProfile, err)
+			}
+		}
 		return 0, fmt.Errorf("failed to insert worker profile: %w", err)
 	}
 

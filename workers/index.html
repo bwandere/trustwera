@@ -6,22 +6,27 @@
   <title>Find Workers — TrustWera</title>
   <meta name="description" content="Search and find verified local skilled and casual workers in your area on TrustWera.">
 
-  <!-- Google Fonts: Fraunces (display, for warmth/character in headings) + Work Sans (body, clean and legible) -->
+  <!-- Google Fonts: Fraunces + Work Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" as="style">
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap">
 
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
 
-<a href="#main-content" class="skip-to-content">Skip to main content</a>
+  <a href="#main-content" class="skip-to-content">Skip to main content</a>
 
   <!-- ============ NAVIGATION ============ -->
   <header class="site-header">
     <nav class="navbar" aria-label="Main navigation">
-      <a href="/" class="navbar__logo">TrustWera</a>
+      <a href="/" class="navbar__logo">
+        <svg class="navbar__logo-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        <span>TrustWera</span>
+      </a>
 
       <button class="navbar__toggle" aria-expanded="false" aria-controls="navbar-menu" aria-label="Open menu">
         <span class="navbar__toggle-bar" aria-hidden="true"></span>
@@ -29,18 +34,18 @@
         <span class="navbar__toggle-bar" aria-hidden="true"></span>
       </button>
 
-      <div class="navbar__menu" id="navbar-menu" role="navigation">
-        <ul class="navbar__links" role="menubar">
-          <li role="none"><a href="/" role="menuitem">Home</a></li>
-          <li role="none"><a href="/workers" role="menuitem">Find Workers</a></li>
-          <li role="none"><a href="/become-a-worker" role="menuitem">Become a Worker</a></li>
-          <li role="none"><a href="/about" role="menuitem">About</a></li>
+      <div class="navbar__menu" id="navbar-menu">
+        <ul class="navbar__links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/workers" aria-current="page">Find Workers</a></li>
+          <li><a href="/become-a-worker">Become a Worker</a></li>
+          <li><a href="/about">About</a></li>
         </ul>
 
         <div class="navbar__actions">
-          <a href="#" class="btn btn--ghost">Login</a>
-          <a href="#" class="btn btn--outline">Register</a>
-          <a href="/workers" class="btn btn--primary">Hire a Worker</a>
+          <a href="/login" class="btn btn--ghost">Login</a>
+          <a href="/register" class="btn btn--outline">Register</a>
+          <a href="/workers" class="btn btn--secondary">Hire a Worker</a>
         </div>
       </div>
     </nav>
@@ -53,7 +58,7 @@
         <p>Connect with verified skilled and casual workers ready to help in your area.</p>
       </header>
 
-      <!-- Filter bar with three fields -->
+      <!-- Filter bar with trade, location (+datalist), available checkbox -->
       <form class="workers-filter-bar" id="workers-filter-form" role="search" aria-label="Filter workers">
         <div class="filter-group">
           <label for="filter-trade" class="filter-group__label">Trade</label>
@@ -72,7 +77,13 @@
 
         <div class="filter-group">
           <label for="filter-location" class="filter-group__label">Location</label>
-          <input type="text" id="filter-location" name="location" class="filter-group__control filter-group__input" placeholder="e.g. Kisumu, Nairobi">
+          <input type="text" id="filter-location" name="location" list="city-suggestions" class="filter-group__control filter-group__input" placeholder="e.g. Kisumu, Nairobi" autocomplete="address-level2">
+          <datalist id="city-suggestions">
+            <option value="Kisumu"></option>
+            <option value="Nairobi"></option>
+            <option value="Mombasa"></option>
+            <option value="Nakuru"></option>
+          </datalist>
         </div>
 
         <div class="filter-group filter-group--checkbox">
@@ -83,17 +94,25 @@
         </div>
 
         <div class="filter-group filter-group--submit">
-          <button type="submit" class="btn btn--primary filter-submit-btn">Filter Workers</button>
+          <button type="submit" class="btn btn--primary filter-submit-btn" id="filter-submit-btn">Filter Workers</button>
         </div>
       </form>
 
-      <!-- Results summary area -->
+      <!-- Active filter chips container (dynamically populated) -->
+      <div class="active-filters" id="active-filters" aria-label="Active filters" hidden></div>
+
+      <!-- Results summary area with live announcements -->
       <div class="workers-results-summary" id="results-summary" aria-live="polite">Loading…</div>
 
-      <!-- Empty worker grid container, to be populated by JS -->
+      <!-- Worker grid container -->
       <ul class="worker-grid" id="workers-grid" role="list"></ul>
 
-      <!-- Empty-state block (hidden by default) for zero matching results -->
+      <!-- Client-side Show more button -->
+      <div id="show-more-container" style="text-align: center; margin-top: var(--space-xl);" hidden>
+        <button type="button" class="btn btn--outline" id="show-more-btn">Show more workers</button>
+      </div>
+
+      <!-- Empty-state block -->
       <div class="workers-state-block workers-state-block--empty" id="empty-state" hidden>
         <div class="workers-state-icon" aria-hidden="true">🔍</div>
         <h2>No workers found</h2>
@@ -101,7 +120,7 @@
         <button type="button" class="btn btn--outline" id="clear-filters-btn">Clear all filters</button>
       </div>
 
-      <!-- Error-state block (hidden by default) for fetch failures -->
+      <!-- Error-state block -->
       <div class="workers-state-block workers-state-block--error" id="error-state" hidden>
         <div class="workers-state-icon" aria-hidden="true">⚠️</div>
         <h2>Unable to load workers</h2>
@@ -112,7 +131,7 @@
   </main>
 
   <!-- ============ FOOTER ============ -->
-  <footer class="site-footer" role="contentinfo" aria-label="Site footer">
+  <footer class="site-footer">
     <div class="site-footer__brand">
       <p class="site-footer__logo">TrustWera</p>
       <p class="site-footer__tagline">Trusted Hands. Local Opportunities.</p>
@@ -136,15 +155,19 @@
     <div class="site-footer__social">
       <h3>Follow</h3>
       <ul class="social-icons">
-        <li><a href="#" aria-label="TrustWera on Facebook">FB</a></li>
-        <li><a href="#" aria-label="TrustWera on Instagram">IG</a></li>
-        <li><a href="#" aria-label="TrustWera on X">X</a></li>
+        <li><a href="https://facebook.com/trustwera" aria-label="TrustWera on Facebook" target="_blank" rel="noopener noreferrer">FB</a></li>
+        <li><a href="https://instagram.com/trustwera" aria-label="TrustWera on Instagram" target="_blank" rel="noopener noreferrer">IG</a></li>
+        <li><a href="https://x.com/trustwera" aria-label="TrustWera on X" target="_blank" rel="noopener noreferrer">X</a></li>
       </ul>
     </div>
 
     <p class="site-footer__copyright">&copy; 2026 TrustWera. Built for local communities.</p>
   </footer>
 
+  <!-- Scripts in required load order: config -> api -> worker-card -> script -> page scripts -->
+  <script src="/assets/js/config.js" defer></script>
+  <script src="/assets/js/api.js" defer></script>
+  <script src="/assets/js/worker-card.js" defer></script>
   <script src="/assets/js/script.js" defer></script>
   <script src="/assets/js/workers.js" defer></script>
 </body>

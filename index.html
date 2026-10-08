@@ -32,7 +32,7 @@
       <div class="navbar__menu" id="navbar-menu" role="navigation">
         <ul class="navbar__links" role="menubar">
           <li role="none"><a href="#" role="menuitem">Home</a></li>
-          <li role="none"><a href="#" role="menuitem">Find Workers</a></li>
+          <li role="none"><a href="/workers/index.html" role="menuitem">Find Workers</a></li>
           <li role="none"><a href="#" role="menuitem">Become a Worker</a></li>
           <li role="none"><a href="#" role="menuitem">About</a></li>
         </ul>
@@ -206,17 +206,26 @@
 
       <ol class="timeline" role="list">
         <li class="timeline__step" role="listitem">
-          <span class="timeline__marker" aria-hidden="true">1</span>
+          <div class="timeline__marker" aria-hidden="true">
+            <canvas class="timeline__canvas" aria-hidden="true"></canvas>
+            <span class="timeline__badge">1</span>
+          </div>
           <h3>Search</h3>
           <p>Tell us what you need and where you are.</p>
         </li>
         <li class="timeline__step" role="listitem">
-          <span class="timeline__marker" aria-hidden="true">2</span>
+          <div class="timeline__marker" aria-hidden="true">
+            <canvas class="timeline__canvas" aria-hidden="true"></canvas>
+            <span class="timeline__badge">2</span>
+          </div>
           <h3>Choose</h3>
           <p>Compare verified profiles and pick who fits.</p>
         </li>
         <li class="timeline__step" role="listitem">
-          <span class="timeline__marker" aria-hidden="true">3</span>
+          <div class="timeline__marker" aria-hidden="true">
+            <canvas class="timeline__canvas" aria-hidden="true"></canvas>
+            <span class="timeline__badge">3</span>
+          </div>
           <h3>Contact</h3>
           <p>Reach out directly and get the work started.</p>
         </li>
@@ -317,5 +326,6 @@
 
   <!-- Script will be built in Session E. -->
   <script src="assets/js/script.js" defer></script>
+  <script src="assets/js/how-it-works-3d.js" defer></script>
 </body>
 </html>

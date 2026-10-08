@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create an Account — TrustWera</title>
+  <meta name="description" content="Register for a TrustWera account to save favorite workers and manage requests.">
+
+  <!-- Google Fonts: Fraunces + Work Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+  <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="site-header">
+    <nav class="navbar" aria-label="Main navigation">
+      <a href="/" class="navbar__logo">
+        <svg class="navbar__logo-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        <span>TrustWera</span>
+      </a>
+
+      <button class="navbar__toggle" aria-expanded="false" aria-controls="navbar-menu" aria-label="Open menu">
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+      </button>
+
+      <div class="navbar__menu" id="navbar-menu">
+        <ul class="navbar__links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/workers">Find Workers</a></li>
+          <li><a href="/become-a-worker">Become a Worker</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+
+        <div class="navbar__actions">
+          <a href="/login" class="btn btn--ghost">Login</a>
+          <a href="/register" class="btn btn--outline">Register</a>
+          <a href="/workers" class="btn btn--secondary">Hire a Worker</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content" class="form-page-container">
+    <div class="form-card">
+      <header class="form-card__header">
+        <h1>Create Client Account</h1>
+        <p>Register as a household or business client on TrustWera.</p>
+      </header>
+
+      <div id="register-general-error" class="alert alert--error" role="alert" hidden></div>
+
+      <!-- Registration Form -->
+      <form id="client-register-form" class="form" novalidate aria-label="Client registration form">
+        <div class="field">
+          <label for="reg-name">
+            Full name <span class="field__required" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="text"
+            id="reg-name"
+            name="full_name"
+            required
+            autocomplete="name"
+            placeholder="e.g. Mary Wanjiku"
+            aria-describedby="error-reg-name"
+          >
+          <span id="error-reg-name" class="field__error" aria-live="polite"></span>
+        </div>
+
+        <div class="field">
+          <label for="reg-phone">
+            Phone number <span class="field__required" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="tel"
+            id="reg-phone"
+            name="phone"
+            required
+            inputmode="tel"
+            autocomplete="tel"
+            placeholder="e.g. 0712 345 678"
+            aria-describedby="error-reg-phone"
+          >
+          <span id="error-reg-phone" class="field__error" aria-live="polite"></span>
+        </div>
+
+        <div class="field">
+          <label for="reg-email">
+            Email address <span class="field__required" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="email"
+            id="reg-email"
+            name="email"
+            required
+            autocomplete="email"
+            placeholder="you@example.com"
+            aria-describedby="error-reg-email"
+          >
+          <span id="error-reg-email" class="field__error" aria-live="polite"></span>
+        </div>
+
+        <div class="field">
+          <label for="reg-password">
+            Password <span class="field__required" aria-hidden="true">*</span>
+          </label>
+          <div class="field__input-wrap">
+            <input
+              type="password"
+              id="reg-password"
+              name="password"
+              required
+              minlength="8"
+              autocomplete="new-password"
+              placeholder="At least 8 characters"
+              aria-describedby="hint-reg-password error-reg-password"
+            >
+            <button type="button" class="field__toggle-btn" id="toggle-reg-password-btn" aria-label="Show password">
+              Show
+            </button>
+          </div>
+          <span id="hint-reg-password" class="field__hint">Must be at least 8 characters long.</span>
+          <span id="error-reg-password" class="field__error" aria-live="polite"></span>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--large" id="reg-submit-btn" style="width: 100%; margin-top: var(--space-md);">
+          Create Account
+        </button>
+      </form>
+
+      <!-- Success Panel -->
+      <div id="register-success-panel" hidden style="text-align: center; padding: var(--space-lg) 0;">
+        <div class="workers-state-icon" style="font-size: 3.5rem; margin-bottom: var(--space-sm);">🎉</div>
+        <h2>Account Created!</h2>
+        <p style="font-size: 1.05rem; margin-bottom: var(--space-xl);">
+          You're all set! You can now explore the verified directory and directly contact workers in your neighborhood.
+        </p>
+        <a href="/workers" class="btn btn--primary btn--large">Find Local Workers</a>
+      </div>
+
+      <p class="form-footer-text">
+        Already have an account? <a href="/login">Login here</a><br>
+        Are you a service provider? <a href="/become-a-worker">Join as a worker</a>
+      </p>
+    </div>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="site-footer__brand">
+      <p class="site-footer__logo">TrustWera</p>
+      <p class="site-footer__tagline">Trusted Hands. Local Opportunities.</p>
+    </div>
+
+    <nav class="site-footer__links" aria-label="Footer navigation">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/workers">Find Workers</a></li>
+        <li><a href="/become-a-worker">Become a Worker</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-footer__contact">
+      <h3>Contact</h3>
+      <p><a href="mailto:hello@trustwera.example">hello@trustwera.example</a></p>
+    </div>
+
+    <div class="site-footer__social">
+      <h3>Follow</h3>
+      <ul class="social-icons">
+        <li><a href="https://facebook.com/trustwera" aria-label="TrustWera on Facebook" target="_blank" rel="noopener noreferrer">FB</a></li>
+        <li><a href="https://instagram.com/trustwera" aria-label="TrustWera on Instagram" target="_blank" rel="noopener noreferrer">IG</a></li>
+        <li><a href="https://x.com/trustwera" aria-label="TrustWera on X" target="_blank" rel="noopener noreferrer">X</a></li>
+      </ul>
+    </div>
+
+    <p class="site-footer__copyright">&copy; 2026 TrustWera. Built for local communities.</p>
+  </footer>
+
+  <!-- Scripts in required load order -->
+  <script src="/assets/js/config.js" defer></script>
+  <script src="/assets/js/api.js" defer></script>
+  <script src="/assets/js/worker-card.js" defer></script>
+  <script src="/assets/js/script.js" defer></script>
+  <script src="/assets/js/register.js" defer></script>
+</body>
+</html>

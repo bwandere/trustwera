@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Worker Profile — TrustWera</title>
+  <meta name="description" content="View verified worker profile, skills, experience, and direct contact details on TrustWera.">
+
+  <!-- Google Fonts: Fraunces + Work Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+  <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="site-header">
+    <nav class="navbar" aria-label="Main navigation">
+      <a href="/" class="navbar__logo">
+        <svg class="navbar__logo-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        <span>TrustWera</span>
+      </a>
+
+      <button class="navbar__toggle" aria-expanded="false" aria-controls="navbar-menu" aria-label="Open menu">
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+      </button>
+
+      <div class="navbar__menu" id="navbar-menu">
+        <ul class="navbar__links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/workers">Find Workers</a></li>
+          <li><a href="/become-a-worker">Become a Worker</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+
+        <div class="navbar__actions">
+          <a href="/login" class="btn btn--ghost">Login</a>
+          <a href="/register" class="btn btn--outline">Register</a>
+          <a href="/workers" class="btn btn--secondary">Hire a Worker</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content" class="profile-page-main">
+    <div class="profile-container">
+      <a href="/workers" class="profile-back-link">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to all workers
+      </a>
+
+      <!-- Loading Skeleton State -->
+      <div id="profile-skeleton" class="profile-card" aria-hidden="true">
+        <div class="profile-header">
+          <div class="skeleton" style="width: 80px; height: 80px; border-radius: 50%;"></div>
+          <div class="profile-header__info">
+            <div class="skeleton skeleton-text" style="width: 50%; height: 28px;"></div>
+            <div class="skeleton skeleton-text" style="width: 30%; height: 20px;"></div>
+            <div class="skeleton skeleton-text" style="width: 25%; height: 16px;"></div>
+          </div>
+        </div>
+        <div class="skeleton skeleton-text" style="width: 90%; height: 16px;"></div>
+        <div class="skeleton skeleton-text" style="width: 85%; height: 16px;"></div>
+        <div class="skeleton skeleton-text" style="width: 70%; height: 16px; margin-bottom: 2rem;"></div>
+        <div class="skeleton" style="width: 220px; height: 48px; border-radius: 8px;"></div>
+      </div>
+
+      <!-- Main Profile View (hidden while loading) -->
+      <article id="profile-content" class="profile-card" hidden>
+        <div class="profile-header">
+          <div id="profile-avatar-container"></div>
+          <div class="profile-header__info">
+            <div class="profile-header__name-row">
+              <h1 id="profile-name" class="profile-header__name"></h1>
+              <div id="profile-verified-badge"></div>
+            </div>
+            <p id="profile-primary-role" class="profile-header__role"></p>
+            <p class="profile-header__location">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 16px; height: 16px;">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span id="profile-location"></span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Metadata Grid -->
+        <div class="profile-meta-grid">
+          <div class="profile-meta-card" id="profile-experience-card" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 18px; height: 18px; color: var(--color-primary);">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+            </svg>
+            <span id="profile-experience"></span>
+          </div>
+
+          <div class="profile-meta-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 18px; height: 18px; color: var(--color-secondary);">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span id="profile-availability"></span>
+          </div>
+
+          <div class="profile-meta-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 18px; height: 18px; color: var(--color-accent);">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <span>Ratings coming soon</span>
+          </div>
+        </div>
+
+        <!-- Skills List -->
+        <div style="margin-bottom: var(--space-lg);">
+          <h2 class="profile-section-title">Skills & Trades</h2>
+          <div id="profile-skills" class="worker-card__chips"></div>
+        </div>
+
+        <!-- Bio (rendered strictly as text) -->
+        <div style="margin-bottom: var(--space-xl);">
+          <h2 class="profile-section-title">About this worker</h2>
+          <p id="profile-bio" class="profile-bio"></p>
+        </div>
+
+        <!-- Contact Worker Box -->
+        <section class="contact-action-box" aria-labelledby="contact-box-title">
+          <h2 id="contact-box-title">Ready to hire?</h2>
+          <p>Get in touch directly with this worker to discuss your task and agree on terms.</p>
+
+          <div id="contact-initial-panel">
+            <button type="button" class="btn btn--primary btn--large" id="reveal-contact-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right: 6px;">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              Contact worker
+            </button>
+          </div>
+
+          <div id="contact-revealed-panel" class="contact-revealed" hidden>
+            <p id="contact-phone-display" style="font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem;"></p>
+            <div class="contact-buttons">
+              <a href="tel:" id="call-btn" class="btn btn--primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+                Call
+              </a>
+              <a href="https://wa.me/" id="whatsapp-btn" target="_blank" rel="noopener noreferrer" class="btn btn--secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                </svg>
+                WhatsApp
+              </a>
+              <button type="button" id="copy-phone-btn" class="btn btn--outline">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span id="copy-phone-text">Copy number</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="contact-error" class="alert alert--error" style="margin-top: 1rem;" hidden></div>
+        </section>
+
+        <!-- Hiring Safely Tips Box -->
+        <aside class="safety-tips" aria-labelledby="safety-heading">
+          <h3 id="safety-heading">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--color-accent);">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            Hiring Safely
+          </h3>
+          <ul>
+            <li>Agree on the price and scope before work begins.</li>
+            <li>Never pay in full in advance. Pay upon satisfaction or staged milestones.</li>
+            <li>Meet in a visible, public, or well-monitored place for initial inspections.</li>
+            <li>Report suspicious behavior or complaints to <a href="mailto:hello@trustwera.example" style="text-decoration: underline; color: var(--color-primary);">hello@trustwera.example</a>.</li>
+          </ul>
+        </aside>
+      </article>
+
+      <!-- 404 Not Found State -->
+      <div id="profile-404" class="workers-state-block" hidden>
+        <div class="workers-state-icon" aria-hidden="true">🔍</div>
+        <h2>Worker profile not found</h2>
+        <p>The worker profile you requested does not exist or may have been removed.</p>
+        <a href="/workers" class="btn btn--primary">Browse all workers</a>
+      </div>
+
+      <!-- Error State -->
+      <div id="profile-error" class="workers-state-block workers-state-block--error" hidden>
+        <div class="workers-state-icon" aria-hidden="true">⚠️</div>
+        <h2>Unable to load profile</h2>
+        <p id="profile-error-message">We encountered an issue loading this worker's profile.</p>
+        <button type="button" class="btn btn--primary" id="profile-retry-btn">Try again</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="site-footer__brand">
+      <p class="site-footer__logo">TrustWera</p>
+      <p class="site-footer__tagline">Trusted Hands. Local Opportunities.</p>
+    </div>
+
+    <nav class="site-footer__links" aria-label="Footer navigation">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/workers">Find Workers</a></li>
+        <li><a href="/become-a-worker">Become a Worker</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-footer__contact">
+      <h3>Contact</h3>
+      <p><a href="mailto:hello@trustwera.example">hello@trustwera.example</a></p>
+    </div>
+
+    <div class="site-footer__social">
+      <h3>Follow</h3>
+      <ul class="social-icons">
+        <li><a href="https://facebook.com/trustwera" aria-label="TrustWera on Facebook" target="_blank" rel="noopener noreferrer">FB</a></li>
+        <li><a href="https://instagram.com/trustwera" aria-label="TrustWera on Instagram" target="_blank" rel="noopener noreferrer">IG</a></li>
+        <li><a href="https://x.com/trustwera" aria-label="TrustWera on X" target="_blank" rel="noopener noreferrer">X</a></li>
+      </ul>
+    </div>
+
+    <p class="site-footer__copyright">&copy; 2026 TrustWera. Built for local communities.</p>
+  </footer>
+
+  <!-- Scripts in required load order -->
+  <script src="/assets/js/config.js" defer></script>
+  <script src="/assets/js/api.js" defer></script>
+  <script src="/assets/js/worker-card.js" defer></script>
+  <script src="/assets/js/script.js" defer></script>
+  <script src="/assets/js/profile.js" defer></script>
+</body>
+</html>

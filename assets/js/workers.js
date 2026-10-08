@@ -15,6 +15,9 @@
     const clearFiltersBtn = document.getElementById('clear-filters-btn');
     const retryBtn = document.getElementById('retry-btn');
 
+    // Active request controller for race condition cancellation
+    let currentController = null;
+
     // Trade name display formatting map
     const TRADE_LABELS = {
         electrician: 'Electrician',
@@ -205,13 +208,20 @@
      * Fetch workers against real API: /api/workers?[params]
      */
     async function fetchWorkers() {
+        if (currentController) {
+            currentController.abort();
+        }
+        currentController = new AbortController();
+
         setLoadingState();
 
         const params = buildQueryParams();
         const queryString = params.toString();
 
         try {
-            const response = await fetch('/api/workers?' + queryString);
+            const response = await fetch('/api/workers?' + queryString, {
+                signal: currentController.signal
+            });
             if (!response.ok) {
                 throw new Error(`Server returned status ${response.status}`);
             }
@@ -223,6 +233,9 @@
                 setSuccessState(workers);
             }
         } catch (err) {
+            if (err.name === 'AbortError') {
+                return;
+            }
             console.error('Failed to fetch workers:', err);
             setErrorState("Couldn't load workers right now — try again shortly");
         }

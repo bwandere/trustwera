@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Become a Worker — TrustWera</title>
+  <meta name="description" content="Register your profile as a skilled or casual worker on TrustWera and get discovered by local households and businesses.">
+
+  <!-- Google Fonts: Fraunces + Work Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+  <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="site-header">
+    <nav class="navbar" aria-label="Main navigation">
+      <a href="/" class="navbar__logo">
+        <svg class="navbar__logo-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        <span>TrustWera</span>
+      </a>
+
+      <button class="navbar__toggle" aria-expanded="false" aria-controls="navbar-menu" aria-label="Open menu">
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+      </button>
+
+      <div class="navbar__menu" id="navbar-menu">
+        <ul class="navbar__links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/workers">Find Workers</a></li>
+          <li><a href="/become-a-worker" aria-current="page">Become a Worker</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+
+        <div class="navbar__actions">
+          <a href="/login" class="btn btn--ghost">Login</a>
+          <a href="/register" class="btn btn--outline">Register</a>
+          <a href="/workers" class="btn btn--secondary">Hire a Worker</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content" class="form-page-container">
+    <div class="form-card">
+      <header class="form-card__header">
+        <h1>Join TrustWera as a Worker</h1>
+        <p>Create your verified profile to connect directly with local clients looking for your skills.</p>
+      </header>
+
+      <div id="form-general-error" class="alert alert--error" role="alert" hidden></div>
+
+      <!-- Registration Form -->
+      <form id="become-worker-form" class="form" novalidate aria-label="Worker registration form">
+        <!-- Full Name -->
+        <div class="field">
+          <label for="field-full-name">
+            Full name <span class="field__required" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="text"
+            id="field-full-name"
+            name="full_name"
+            required
+            autocomplete="name"
+            placeholder="e.g. James Otieno"
+            aria-describedby="hint-full-name error-full-name"
+          >
+          <span id="hint-full-name" class="field__hint">Enter your legal first and last name.</span>
+          <span id="error-full-name" class="field__error" aria-live="polite"></span>
+        </div>
+
+        <!-- Phone -->
+        <div class="field">
+          <label for="field-phone">
+            Phone number <span class="field__required" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="tel"
+            id="field-phone"
+            name="phone"
+            required
+            inputmode="tel"
+            autocomplete="tel"
+            placeholder="e.g. 0712 345 678"
+            aria-describedby="hint-phone error-phone"
+          >
+          <span id="hint-phone" class="field__hint">Clients will use this number to call or WhatsApp you directly.</span>
+          <span id="error-phone" class="field__error" aria-live="polite"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="field">
+          <label for="field-email">
+            Email address <span class="field__required" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="email"
+            id="field-email"
+            name="email"
+            required
+            autocomplete="email"
+            placeholder="you@example.com"
+            aria-describedby="hint-email error-email"
+          >
+          <span id="hint-email" class="field__hint">Used for account notifications and security.</span>
+          <span id="error-email" class="field__error" aria-live="polite"></span>
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+          <label for="field-password">
+            Password <span class="field__required" aria-hidden="true">*</span>
+          </label>
+          <div class="field__input-wrap">
+            <input
+              type="password"
+              id="field-password"
+              name="password"
+              required
+              minlength="8"
+              autocomplete="new-password"
+              placeholder="At least 8 characters"
+              aria-describedby="hint-password error-password"
+            >
+            <button type="button" class="field__toggle-btn" id="toggle-password-btn" aria-label="Show password">
+              Show
+            </button>
+          </div>
+          <span id="hint-password" class="field__hint">Must be at least 8 characters with a mix of letters and numbers.</span>
+          <span id="error-password" class="field__error" aria-live="polite"></span>
+        </div>
+
+        <!-- Location -->
+        <div class="field">
+          <label for="field-location">
+            Primary location / area <span class="field__required" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="text"
+            id="field-location"
+            name="location_area"
+            required
+            list="location-suggestions"
+            autocomplete="address-level2"
+            placeholder="e.g. Kisumu, Manyatta, Kondele"
+            aria-describedby="hint-location error-location"
+          >
+          <datalist id="location-suggestions">
+            <option value="Kisumu"></option>
+            <option value="Nairobi"></option>
+            <option value="Mombasa"></option>
+            <option value="Nakuru"></option>
+          </datalist>
+          <span id="hint-location" class="field__hint">The neighborhood or town where you primarily offer services.</span>
+          <span id="error-location" class="field__error" aria-live="polite"></span>
+        </div>
+
+        <!-- Trades / Skills -->
+        <fieldset class="trades-fieldset" aria-describedby="hint-trades error-trades">
+          <legend>Trades & Skills <span class="field__required" aria-hidden="true">*</span></legend>
+          <span id="hint-trades" class="field__hint" style="margin-bottom: 0.5rem; display: block;">Select at least one trade that matches your expertise.</span>
+          
+          <div id="trades-container">
+            <!-- Dynamically populated or fallback rendered by JS -->
+            <p class="trades-category-title">Skilled Trades</p>
+            <div class="trades-grid" id="skilled-trades-grid">
+              <label><input type="checkbox" name="skill_ids" value="1"> Electrician</label>
+              <label><input type="checkbox" name="skill_ids" value="2"> Plumber</label>
+              <label><input type="checkbox" name="skill_ids" value="3"> Carpenter</label>
+              <label><input type="checkbox" name="skill_ids" value="4"> Painter</label>
+              <label><input type="checkbox" name="skill_ids" value="5"> Mechanic</label>
+            </div>
+
+            <p class="trades-category-title">Casual Trades</p>
+            <div class="trades-grid" id="casual-trades-grid">
+              <label><input type="checkbox" name="skill_ids" value="6"> Cleaner</label>
+              <label><input type="checkbox" name="skill_ids" value="7"> Gardener</label>
+              <label><input type="checkbox" name="skill_ids" value="8"> Security Guard</label>
+            </div>
+          </div>
+          <span id="error-trades" class="field__error" aria-live="polite"></span>
+        </fieldset>
+
+        <!-- Years of Experience -->
+        <div class="field">
+          <label for="field-experience">
+            Years of experience (optional)
+          </label>
+          <input
+            type="number"
+            id="field-experience"
+            name="years_experience"
+            min="0"
+            max="60"
+            placeholder="e.g. 5"
+            aria-describedby="hint-experience error-experience"
+          >
+          <span id="hint-experience" class="field__hint">Number of years working in your trade (0–60).</span>
+          <span id="error-experience" class="field__error" aria-live="polite"></span>
+        </div>
+
+        <!-- Bio with live counter -->
+        <div class="field">
+          <label for="field-bio">
+            Short bio (optional)
+            <span id="bio-counter" style="font-weight: 400; font-size: 0.8rem; color: var(--color-text-muted);">0 / 1000</span>
+          </label>
+          <textarea
+            id="field-bio"
+            name="bio"
+            rows="4"
+            maxlength="1000"
+            placeholder="Tell clients about your specialty, tools, standard rates, or past projects..."
+            aria-describedby="hint-bio error-bio"
+          ></textarea>
+          <span id="hint-bio" class="field__hint">A clear summary helps neighbors trust your experience. Max 1000 characters.</span>
+          <span id="error-bio" class="field__error" aria-live="polite"></span>
+        </div>
+
+        <!-- Available Now Checkbox -->
+        <div class="field field--checkbox">
+          <input type="checkbox" id="field-available" name="is_available" checked>
+          <label for="field-available">
+            <strong>Available now</strong> — clients can see you are ready for incoming requests today.
+          </label>
+        </div>
+
+        <!-- Verification Consent Checkbox -->
+        <div class="field field--checkbox">
+          <input type="checkbox" id="field-consent" name="consent" required aria-describedby="error-consent">
+          <label for="field-consent">
+            I understand that my profile will be listed in the directory, and that the <strong>Verified badge</strong> is only granted after our team checks my identity and qualifications. <span class="field__required" aria-hidden="true">*</span>
+          </label>
+        </div>
+        <span id="error-consent" class="field__error" style="margin-top: -0.5rem;" aria-live="polite"></span>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn--primary btn--large" id="worker-submit-btn" style="width: 100%; margin-top: var(--space-md);">
+          Create Worker Profile
+        </button>
+      </form>
+
+      <!-- Success Confirmation Panel -->
+      <div id="worker-success-panel" hidden style="text-align: center; padding: var(--space-lg) 0;">
+        <div class="workers-state-icon" style="font-size: 3.5rem; margin-bottom: var(--space-sm);">✅</div>
+        <h2>Profile Created Successfully!</h2>
+        <p style="font-size: 1.05rem; margin-bottom: var(--space-lg);">
+          Welcome to TrustWera. Your worker profile is now live in the directory.
+        </p>
+
+        <div class="alert alert--info" style="text-align: left; margin-bottom: var(--space-xl);">
+          <div>
+            <strong>What happens next?</strong><br>
+            Our community verification team will review your contact details and trade history. Once verified, a green <strong>✓ Verified</strong> badge will appear on your card to help you earn clients' trust even faster.
+          </div>
+        </div>
+
+        <div style="display: flex; gap: var(--space-sm); justify-content: center; flex-wrap: wrap;">
+          <a href="/workers" id="view-new-profile-btn" class="btn btn--primary">View My Profile</a>
+          <a href="/workers" class="btn btn--outline">Browse Directory</a>
+        </div>
+      </div>
+
+      <p class="form-footer-text">
+        Looking to hire someone instead? <a href="/workers">Find local workers</a>
+      </p>
+    </div>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="site-footer__brand">
+      <p class="site-footer__logo">TrustWera</p>
+      <p class="site-footer__tagline">Trusted Hands. Local Opportunities.</p>
+    </div>
+
+    <nav class="site-footer__links" aria-label="Footer navigation">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/workers">Find Workers</a></li>
+        <li><a href="/become-a-worker">Become a Worker</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-footer__contact">
+      <h3>Contact</h3>
+      <p><a href="mailto:hello@trustwera.example">hello@trustwera.example</a></p>
+    </div>
+
+    <div class="site-footer__social">
+      <h3>Follow</h3>
+      <ul class="social-icons">
+        <li><a href="https://facebook.com/trustwera" aria-label="TrustWera on Facebook" target="_blank" rel="noopener noreferrer">FB</a></li>
+        <li><a href="https://instagram.com/trustwera" aria-label="TrustWera on Instagram" target="_blank" rel="noopener noreferrer">IG</a></li>
+        <li><a href="https://x.com/trustwera" aria-label="TrustWera on X" target="_blank" rel="noopener noreferrer">X</a></li>
+      </ul>
+    </div>
+
+    <p class="site-footer__copyright">&copy; 2026 TrustWera. Built for local communities.</p>
+  </footer>
+
+  <!-- Scripts in required load order -->
+  <script src="/assets/js/config.js" defer></script>
+  <script src="/assets/js/api.js" defer></script>
+  <script src="/assets/js/worker-card.js" defer></script>
+  <script src="/assets/js/script.js" defer></script>
+  <script src="/assets/js/become-worker.js" defer></script>
+</body>
+</html>

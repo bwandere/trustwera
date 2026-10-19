@@ -1,0 +1,14 @@
+cmd/
+internal/
+db/
+go.mod
+go.sum
+docker-compose.yml
+AGENTS.md
+README.md
+LICENSE
+.env
+.env.*
+*.test
+.git
+.gitignore

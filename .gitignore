@@ -27,6 +27,9 @@ go.work.sum
 # env file
 .env
 
+# Vercel CLI cache/metadata
+.vercel/
+
 # Editor/IDE
 # .idea/
 # .vscode/

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — TrustWera</title>
+  <meta name="description" content="Learn more about TrustWera and our mission to connect local clients with verified workers across Kenya.">
+
+  <!-- Google Fonts: Fraunces (display) + Work Sans (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,400&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="site-header">
+    <nav class="navbar" aria-label="Main navigation">
+      <a href="/" class="navbar__logo">
+        <svg class="navbar__logo-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <circle cx="14" cy="14" r="14" fill="#1E3A8A"/>
+          <path d="M8 14.5L12 18.5L20 10.5" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>TrustWera</span>
+      </a>
+
+      <button class="navbar__toggle" aria-expanded="false" aria-controls="navbar-menu" aria-label="Open menu">
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+      </button>
+
+      <div class="navbar__menu" id="navbar-menu">
+        <ul class="navbar__links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/workers">Find Workers</a></li>
+          <li><a href="/become-a-worker">Become a Worker</a></li>
+          <li><a href="/about" aria-current="page">About</a></li>
+        </ul>
+
+        <div class="navbar__actions" data-auth-actions>
+          <a href="/login" class="btn btn--ghost">Login</a>
+          <a href="/register" class="btn btn--outline">Register</a>
+          <a href="/workers" class="btn btn--primary">Hire a Worker</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main id="main-content">
+    <div class="workers-container">
+      <div class="workers-state-block">
+        <div class="workers-state-icon" aria-hidden="true">🤝</div>
+        <h2>About TrustWera</h2>
+        <p>TrustWera is a community services platform built for Kenyan neighborhoods. We replace slow, unverifiable word-of-mouth hiring with a transparent directory of verified skilled and casual workers.</p>
+        <a href="/workers" class="btn btn--primary">Find Local Workers</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer" role="contentinfo" aria-label="Site footer">
+    <div class="site-footer__brand">
+      <p class="site-footer__logo">TrustWera</p>
+      <p class="site-footer__tagline">Trusted Hands. Local Opportunities.</p>
+    </div>
+
+    <nav class="site-footer__links" aria-label="Footer navigation">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/workers">Find Workers</a></li>
+        <li><a href="/become-a-worker">Become a Worker</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-footer__contact">
+      <h3>Contact</h3>
+      <p><a href="mailto:hello@trustwera.example">hello@trustwera.example</a></p>
+    </div>
+
+    <div class="site-footer__social">
+      <h3>Follow</h3>
+      <ul class="social-icons">
+        <li><a href="https://facebook.com/trustwera" target="_blank" rel="noopener noreferrer" aria-label="TrustWera on Facebook">FB</a></li>
+        <li><a href="https://instagram.com/trustwera" target="_blank" rel="noopener noreferrer" aria-label="TrustWera on Instagram">IG</a></li>
+        <li><a href="https://x.com/trustwera" target="_blank" rel="noopener noreferrer" aria-label="TrustWera on X">X</a></li>
+      </ul>
+    </div>
+
+    <p class="site-footer__copyright">&copy; 2026 TrustWera. Built for local communities.</p>
+  </footer>
+
+  <script src="/assets/js/script.js" defer></script>
+</body>
+</html>

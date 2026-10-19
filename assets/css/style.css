@@ -1691,6 +1691,46 @@ textarea:focus-visible {
   text-align: center;
 }
 
+/* Active Filter Chips */
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.35rem 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  background-color: #EFF6FF;
+  border: 1px solid #DBEAFE;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.filter-chip:hover {
+  background-color: #DBEAFE;
+}
+
+.filter-chip__remove {
+  font-size: 1.1rem;
+  line-height: 1;
+  font-weight: 700;
+}
+
+/* Show More Container */
+.show-more-container {
+  text-align: center;
+  margin-top: var(--space-xl);
+}
+
 /* Empty & Error State Blocks */
 .workers-state-block {
   text-align: center;

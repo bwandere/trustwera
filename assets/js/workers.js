@@ -1,299 +1,404 @@
 // Find Workers page logic
-(function() {
-    'use strict';
+(function () {
+  'use strict';
 
-    // DOM Elements
-    const form = document.getElementById('workers-filter-form');
-    const tradeSelect = document.getElementById('filter-trade');
-    const locationInput = document.getElementById('filter-location');
-    const availableCheckbox = document.getElementById('filter-available');
-    const resultsSummary = document.getElementById('results-summary');
-    const workersGrid = document.getElementById('workers-grid');
-    const emptyState = document.getElementById('empty-state');
-    const errorState = document.getElementById('error-state');
-    const errorMessage = document.getElementById('error-message');
-    const clearFiltersBtn = document.getElementById('clear-filters-btn');
-    const retryBtn = document.getElementById('retry-btn');
+  const PAGE_SIZE = 24;
 
-    // Active request controller for race condition cancellation
-    let currentController = null;
+  // DOM Elements
+  const form = document.getElementById('workers-filter-form');
+  const tradeSelect = document.getElementById('filter-trade');
+  const locationInput = document.getElementById('filter-location');
+  const availableCheckbox = document.getElementById('filter-available');
+  const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+  const activeFiltersContainer = document.getElementById('active-filters');
+  const resultsSummary = document.getElementById('results-summary');
+  const workersGrid = document.getElementById('workers-grid');
+  const showMoreContainer = document.getElementById('show-more-container');
+  const showMoreBtn = document.getElementById('show-more-btn');
+  const emptyState = document.getElementById('empty-state');
+  const errorState = document.getElementById('error-state');
+  const errorMessage = document.getElementById('error-message');
+  const clearFiltersBtn = document.getElementById('clear-filters-btn');
+  const retryBtn = document.getElementById('retry-btn');
 
-    // Trade name display formatting map
-    const TRADE_LABELS = {
-        electrician: 'Electrician',
-        plumber: 'Plumber',
-        carpenter: 'Carpenter',
-        painter: 'Painter',
-        mechanic: 'Mechanic',
-        cleaner: 'Cleaner',
-        gardener: 'Gardener',
-        security: 'Security Guard'
-    };
+  // Active request controller for race condition cancellation
+  let currentController = null;
 
-    /**
-     * Format skill names cleanly (e.g. "electrician" -> "Electrician")
-     */
-    function formatSkill(name) {
-        if (!name) return '';
-        const key = name.toLowerCase();
-        if (TRADE_LABELS[key]) {
-            return TRADE_LABELS[key];
-        }
-        return name.charAt(0).toUpperCase() + name.slice(1);
+  // In-memory workers cache for client-side pagination
+  let allWorkers = [];
+  let displayedCount = 0;
+
+  /**
+   * Escape HTML utility fallback if workerCard not yet loaded
+   */
+  function escapeText(str) {
+    if (window.TrustWera && window.TrustWera.workerCard && window.TrustWera.workerCard.escapeHTML) {
+      return window.TrustWera.workerCard.escapeHTML(str);
+    }
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  /**
+   * Format skill label
+   */
+  function formatSkillLabel(name) {
+    if (window.TrustWera && window.TrustWera.workerCard && window.TrustWera.workerCard.formatSkill) {
+      return window.TrustWera.workerCard.formatSkill(name);
+    }
+    if (!name) return '';
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  }
+
+  /**
+   * Read filter parameters from the current URL query string
+   * and pre-fill form controls.
+   * Checkbox is checked only if available=true is present.
+   */
+  function readFiltersFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const trade = urlParams.get('trade') || '';
+    const location = urlParams.get('location') || '';
+    const available = urlParams.get('available') === 'true';
+
+    if (tradeSelect) tradeSelect.value = trade;
+    if (locationInput) locationInput.value = location;
+    if (availableCheckbox) availableCheckbox.checked = available;
+  }
+
+  /**
+   * Build fetch query parameters from current form filter inputs.
+   * Only include trade/location if non-empty.
+   * Only include available=true if checkbox is checked (never send available=false).
+   */
+  function buildQueryParams() {
+    const params = new URLSearchParams();
+    const trade = tradeSelect ? tradeSelect.value.trim() : '';
+    const location = locationInput ? locationInput.value.trim() : '';
+    const isAvailableChecked = availableCheckbox ? availableCheckbox.checked : false;
+
+    if (trade) {
+      params.set('trade', trade);
+    }
+    if (location) {
+      params.set('location', location);
+    }
+    if (isAvailableChecked) {
+      params.set('available', 'true');
     }
 
-    /**
-     * Escape special HTML characters to prevent XSS.
-     */
-    function escapeHTML(str) {
-        if (str === null || str === undefined) return '';
-        return String(str)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
+    return params;
+  }
+
+  /**
+   * Render active filter chips that remove themselves when clicked
+   */
+  function renderActiveFilterChips() {
+    if (!activeFiltersContainer) return;
+    activeFiltersContainer.innerHTML = '';
+
+    const trade = tradeSelect ? tradeSelect.value.trim() : '';
+    const location = locationInput ? locationInput.value.trim() : '';
+    const available = availableCheckbox ? availableCheckbox.checked : false;
+
+    const chips = [];
+
+    if (trade) {
+      chips.push({
+        label: `Trade: ${formatSkillLabel(trade)}`,
+        clear: () => {
+          if (tradeSelect) tradeSelect.value = '';
+        }
+      });
     }
 
-    /**
-     * Read filter parameters from the current URL query string
-     * and pre-fill form controls.
-     * The checkbox is checked only if available=true is present.
-     */
-    function readFiltersFromURL() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const trade = urlParams.get('trade') || '';
-        const location = urlParams.get('location') || '';
-        const available = urlParams.get('available') === 'true';
-
-        if (tradeSelect) tradeSelect.value = trade;
-        if (locationInput) locationInput.value = location;
-        if (availableCheckbox) availableCheckbox.checked = available;
+    if (location) {
+      chips.push({
+        label: `Location: ${location}`,
+        clear: () => {
+          if (locationInput) locationInput.value = '';
+        }
+      });
     }
 
-    /**
-     * Build fetch query string from current form filter inputs.
-     * Only include trade/location if non-empty.
-     * Only include available=true if checkbox is checked (never send available=false).
-     */
-    function buildQueryParams() {
-        const params = new URLSearchParams();
-        const trade = tradeSelect ? tradeSelect.value.trim() : '';
-        const location = locationInput ? locationInput.value.trim() : '';
-        const isAvailableChecked = availableCheckbox ? availableCheckbox.checked : false;
-
-        if (trade) {
-            params.set('trade', trade);
+    if (available) {
+      chips.push({
+        label: 'Available now',
+        clear: () => {
+          if (availableCheckbox) availableCheckbox.checked = false;
         }
-        if (location) {
-            params.set('location', location);
-        }
-        if (isAvailableChecked) {
-            params.set('available', 'true');
-        }
-
-        return params;
+      });
     }
 
-    /**
-     * Four distinct UI states:
-     * 1. Loading
-     * 2. Success with results
-     * 3. Success with zero results
-     * 4. Error
-     */
-
-    function setLoadingState() {
-        if (resultsSummary) resultsSummary.textContent = 'Loading…';
-        if (workersGrid) {
-            workersGrid.innerHTML = '';
-            workersGrid.hidden = true;
-        }
-        if (emptyState) emptyState.hidden = true;
-        if (errorState) errorState.hidden = true;
+    if (chips.length === 0) {
+      activeFiltersContainer.hidden = true;
+      return;
     }
 
-    function setSuccessState(workers) {
-        const count = workers.length;
-        if (resultsSummary) {
-            resultsSummary.textContent = `${count} ${count === 1 ? 'worker' : 'workers'} found`;
-        }
+    activeFiltersContainer.hidden = false;
+    chips.forEach(chip => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'filter-chip';
+      btn.setAttribute('aria-label', `Remove filter ${chip.label}`);
+      btn.innerHTML = `<span>${escapeText(chip.label)}</span> <span class="filter-chip__remove" aria-hidden="true">&times;</span>`;
+      btn.addEventListener('click', () => {
+        chip.clear();
+        applyFiltersAndPushHistory();
+      });
+      activeFiltersContainer.appendChild(btn);
+    });
+  }
 
-        if (workersGrid) {
-            workersGrid.innerHTML = '';
-            workers.forEach(worker => {
-                const card = renderWorkerCard(worker);
-                workersGrid.appendChild(card);
-            });
-            workersGrid.hidden = false;
-        }
+  /**
+   * Render loading skeleton cards
+   */
+  function renderSkeletons(count = 6) {
+    if (!workersGrid) return;
+    workersGrid.innerHTML = '';
+    workersGrid.hidden = false;
+    for (let i = 0; i < count; i++) {
+      const card = document.createElement('li');
+      card.className = 'worker-card worker-card--skeleton';
+      card.setAttribute('aria-hidden', 'true');
+      card.innerHTML = `
+        <div class="worker-card__top">
+          <div class="skeleton skeleton-avatar"></div>
+          <div class="worker-card__header-text" style="flex:1;">
+            <div class="skeleton skeleton-line" style="width: 60%; height: 1.1rem; margin-bottom: 0.5rem;"></div>
+            <div class="skeleton skeleton-line" style="width: 40%; height: 0.9rem; margin-bottom: 0.5rem;"></div>
+            <div class="skeleton skeleton-line" style="width: 50%; height: 0.8rem;"></div>
+          </div>
+        </div>
+        <div class="worker-card__meta" style="margin-top: 1rem;">
+          <div class="skeleton skeleton-line" style="width: 70%; height: 0.8rem; margin-bottom: 0.5rem;"></div>
+          <div class="skeleton skeleton-line" style="width: 50%; height: 0.8rem;"></div>
+        </div>
+        <div class="skeleton skeleton-line" style="width: 100%; height: 38px; margin-top: auto; border-radius: 8px;"></div>
+      `;
+      workersGrid.appendChild(card);
+    }
+  }
 
-        if (emptyState) emptyState.hidden = true;
-        if (errorState) errorState.hidden = true;
+  /**
+   * Set loading UI state
+   */
+  function setLoadingState() {
+    if (submitBtn) submitBtn.disabled = true;
+    if (resultsSummary) resultsSummary.textContent = 'Searching for workers…';
+    renderSkeletons(6);
+    if (emptyState) emptyState.hidden = true;
+    if (errorState) errorState.hidden = true;
+    if (showMoreContainer) showMoreContainer.hidden = true;
+  }
+
+  /**
+   * Append next batch of workers to the grid (up to PAGE_SIZE)
+   */
+  function renderNextBatch() {
+    if (!workersGrid) return;
+
+    if (displayedCount === 0) {
+      workersGrid.innerHTML = '';
+      workersGrid.hidden = false;
     }
 
-    function setEmptyState() {
-        if (resultsSummary) resultsSummary.textContent = '0 workers found';
-        if (workersGrid) {
-            workersGrid.innerHTML = '';
-            workersGrid.hidden = true;
-        }
-        if (emptyState) emptyState.hidden = false;
-        if (errorState) errorState.hidden = true;
-    }
-
-    function setErrorState(message) {
-        const text = message || "Couldn't load workers right now — try again shortly";
-        if (resultsSummary) resultsSummary.textContent = text;
-        if (errorMessage) errorMessage.textContent = text;
-        if (workersGrid) {
-            workersGrid.innerHTML = '';
-            workersGrid.hidden = true;
-        }
-        if (emptyState) emptyState.hidden = true;
-        if (errorState) errorState.hidden = false;
-    }
-
-    /**
-     * Render a single worker card using the API response shape:
-     * id, location_area, is_available, is_verified, skills: [{id, name, category}]
-     */
-    function renderWorkerCard(worker) {
-        const card = document.createElement('li');
-        card.className = 'worker-card';
-        card.setAttribute('role', 'listitem');
-
-        // Photo or placeholder
-        const photoHTML = worker.profile_photo_url
-            ? `<div class="worker-card__photo"><img src="${escapeHTML(worker.profile_photo_url)}" alt="Worker #${escapeHTML(worker.id)} profile photo"></div>`
-            : `<div class="worker-card__photo" role="img" aria-label="Profile photo placeholder"></div>`;
-
-        // Verified badge (shown only when is_verified is true)
-        const badgeHTML = worker.is_verified
-            ? `<span class="worker-card__badge worker-card__badge--verified">✓ Verified</span>`
-            : `<span class="worker-card__badge-placeholder" aria-hidden="true"></span>`;
-
-        // Skill names
-        const skills = Array.isArray(worker.skills) ? worker.skills : [];
-        const skillNames = skills.length > 0
-            ? skills.map(s => formatSkill(s.name)).join(', ')
-            : 'General Worker';
-
-        // Location area
-        const location = worker.location_area
-            ? escapeHTML(worker.location_area)
-            : 'Location not specified';
-
-        // Availability indicator
-        const isAvailable = Boolean(worker.is_available);
-        const availabilityText = isAvailable ? 'Available Now' : 'Currently Unavailable';
-        const availabilityClass = isAvailable
-            ? 'worker-card__availability worker-card__availability--available'
-            : 'worker-card__availability worker-card__availability--unavailable';
-
-        card.innerHTML = `
-            ${photoHTML}
-            ${badgeHTML}
-            <h3>Worker #${escapeHTML(worker.id)}</h3>
-            <p class="worker-card__role">${escapeHTML(skillNames)}</p>
-            <p class="worker-card__location">${location}</p>
-            <p class="${availabilityClass}">${escapeHTML(availabilityText)}</p>
-            <a href="/workers/${encodeURIComponent(worker.id)}" class="btn btn--outline btn--small" aria-label="View worker #${escapeHTML(worker.id)}'s profile">View Profile</a>
-        `;
-
-        return card;
-    }
-
-    /**
-     * Fetch workers against real API: /api/workers?[params]
-     */
-    async function fetchWorkers() {
-        if (currentController) {
-            currentController.abort();
-        }
-        currentController = new AbortController();
-
-        setLoadingState();
-
-        const params = buildQueryParams();
-        const queryString = params.toString();
-
-        try {
-            const response = await fetch('/api/workers?' + queryString, {
-                signal: currentController.signal
-            });
-            if (!response.ok) {
-                throw new Error(`Server returned status ${response.status}`);
-            }
-
-            const workers = await response.json();
-            if (!Array.isArray(workers) || workers.length === 0) {
-                setEmptyState();
-            } else {
-                setSuccessState(workers);
-            }
-        } catch (err) {
-            if (err.name === 'AbortError') {
-                return;
-            }
-            console.error('Failed to fetch workers:', err);
-            setErrorState("Couldn't load workers right now — try again shortly");
-        }
-    }
-
-    /**
-     * Event handlers
-     */
-
-    // Form submit: prevent default reload, update URL history, fetch and re-render
-    if (form) {
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const params = buildQueryParams();
-            const queryString = params.toString();
-            const newURL = window.location.pathname + (queryString ? `?${queryString}` : '');
-
-            window.history.pushState(null, '', newURL);
-            fetchWorkers();
-        });
-    }
-
-    // Support browser Back/Forward navigation
-    window.addEventListener('popstate', function() {
-        readFiltersFromURL();
-        fetchWorkers();
+    const nextBatch = allWorkers.slice(displayedCount, displayedCount + PAGE_SIZE);
+    nextBatch.forEach(worker => {
+      const card = window.TrustWera.workerCard.renderWorkerCard(worker);
+      workersGrid.appendChild(card);
     });
 
-    // Clear filters button
-    if (clearFiltersBtn) {
-        clearFiltersBtn.addEventListener('click', function() {
-            if (tradeSelect) tradeSelect.value = '';
-            if (locationInput) locationInput.value = '';
-            if (availableCheckbox) availableCheckbox.checked = false;
+    displayedCount += nextBatch.length;
 
-            const newURL = window.location.pathname;
-            window.history.pushState(null, '', newURL);
-            fetchWorkers();
-        });
+    // Update announcement text in aria-live container
+    if (resultsSummary) {
+      if (allWorkers.length <= PAGE_SIZE) {
+        resultsSummary.textContent = `${allWorkers.length} ${allWorkers.length === 1 ? 'worker' : 'workers'} found`;
+      } else {
+        resultsSummary.textContent = `Showing ${displayedCount} of ${allWorkers.length} workers found`;
+      }
     }
 
-    // Retry button for error state
-    if (retryBtn) {
-        retryBtn.addEventListener('click', function() {
-            fetchWorkers();
-        });
+    // Toggle "Show more" button
+    if (showMoreContainer) {
+      if (displayedCount < allWorkers.length) {
+        showMoreContainer.hidden = false;
+        if (showMoreBtn) {
+          const remaining = allWorkers.length - displayedCount;
+          showMoreBtn.textContent = `Show more (${remaining} remaining)`;
+        }
+      } else {
+        showMoreContainer.hidden = true;
+      }
+    }
+  }
+
+  /**
+   * Set success UI state
+   */
+  function setSuccessState(workers) {
+    if (submitBtn) submitBtn.disabled = false;
+    allWorkers = workers;
+    displayedCount = 0;
+
+    if (allWorkers.length === 0) {
+      setEmptyState();
+      return;
     }
 
-    // Initial page load initialization
-    function init() {
-        readFiltersFromURL();
-        fetchWorkers();
-    }
+    if (emptyState) emptyState.hidden = true;
+    if (errorState) errorState.hidden = true;
+    renderNextBatch();
+  }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
+  /**
+   * Set empty UI state
+   */
+  function setEmptyState() {
+    if (submitBtn) submitBtn.disabled = false;
+    allWorkers = [];
+    displayedCount = 0;
+
+    if (resultsSummary) resultsSummary.textContent = '0 workers found';
+    if (workersGrid) {
+      workersGrid.innerHTML = '';
+      workersGrid.hidden = true;
     }
+    if (showMoreContainer) showMoreContainer.hidden = true;
+    if (emptyState) emptyState.hidden = false;
+    if (errorState) errorState.hidden = true;
+  }
+
+  /**
+   * Set error UI state
+   */
+  function setErrorState(message) {
+    if (submitBtn) submitBtn.disabled = false;
+    allWorkers = [];
+    displayedCount = 0;
+
+    const text = message || "Couldn't load workers right now — try again shortly";
+    if (resultsSummary) resultsSummary.textContent = text;
+    if (errorMessage) errorMessage.textContent = text;
+    if (workersGrid) {
+      workersGrid.innerHTML = '';
+      workersGrid.hidden = true;
+    }
+    if (showMoreContainer) showMoreContainer.hidden = true;
+    if (emptyState) emptyState.hidden = true;
+    if (errorState) errorState.hidden = false;
+  }
+
+  /**
+   * Fetch workers via window.TrustWera.api.get
+   */
+  async function fetchWorkers() {
+    if (currentController) {
+      currentController.abort();
+    }
+    currentController = new AbortController();
+
+    setLoadingState();
+    renderActiveFilterChips();
+
+    const params = buildQueryParams();
+    const queryString = params.toString();
+    const endpoint = '/api/workers' + (queryString ? '?' + queryString : '');
+
+    try {
+      const workers = await window.TrustWera.api.get(endpoint, {
+        signal: currentController.signal
+      });
+
+      if (!Array.isArray(workers) || workers.length === 0) {
+        setEmptyState();
+      } else {
+        setSuccessState(workers);
+      }
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        return; // Caller cancelled or a newer request was dispatched
+      }
+      console.error('Failed to fetch workers:', err);
+      const userMessage = err.message && !err.isNetworkError
+        ? err.message
+        : "Couldn't load workers right now — try again shortly";
+      setErrorState(userMessage);
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  }
+
+  /**
+   * Push current form state to URL and fetch
+   */
+  function applyFiltersAndPushHistory() {
+    const params = buildQueryParams();
+    const queryString = params.toString();
+    const newURL = window.location.pathname + (queryString ? `?${queryString}` : '');
+    window.history.pushState(null, '', newURL);
+    fetchWorkers();
+  }
+
+  /**
+   * Event Listeners
+   */
+
+  if (form) {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      applyFiltersAndPushHistory();
+    });
+  }
+
+  // Handle browser Back/Forward navigation
+  window.addEventListener('popstate', function () {
+    readFiltersFromURL();
+    fetchWorkers();
+  });
+
+  // Client-side Show More button click
+  if (showMoreBtn) {
+    showMoreBtn.addEventListener('click', function () {
+      renderNextBatch();
+    });
+  }
+
+  // Clear filters button (in empty state)
+  if (clearFiltersBtn) {
+    clearFiltersBtn.addEventListener('click', function () {
+      if (tradeSelect) tradeSelect.value = '';
+      if (locationInput) locationInput.value = '';
+      if (availableCheckbox) availableCheckbox.checked = false;
+
+      const newURL = window.location.pathname;
+      window.history.pushState(null, '', newURL);
+      fetchWorkers();
+    });
+  }
+
+  // Retry button (in error state)
+  if (retryBtn) {
+    retryBtn.addEventListener('click', function () {
+      fetchWorkers();
+    });
+  }
+
+  // Initial page load
+  function init() {
+    readFiltersFromURL();
+    fetchWorkers();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();

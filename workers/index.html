@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Find Workers — TrustWera</title>
-  <meta name="description" content="Search and find verified local skilled and casual workers in your area on TrustWera.">
+  <meta name="description" content="Search and find local skilled and casual workers in your area on TrustWera. Look for the Verified badge for team-checked profiles.">
 
   <!-- Google Fonts: Fraunces (display, for warmth/character in headings) + Work Sans (body, clean and legible) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +21,13 @@
   <!-- ============ NAVIGATION ============ -->
   <header class="site-header">
     <nav class="navbar" aria-label="Main navigation">
-      <a href="/" class="navbar__logo">TrustWera</a>
+      <a href="/" class="navbar__logo">
+        <svg class="navbar__logo-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <circle cx="14" cy="14" r="14" fill="#1E3A8A"/>
+          <path d="M8 14.5L12 18.5L20 10.5" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>TrustWera</span>
+      </a>
 
       <button class="navbar__toggle" aria-expanded="false" aria-controls="navbar-menu" aria-label="Open menu">
         <span class="navbar__toggle-bar" aria-hidden="true"></span>
@@ -29,17 +35,17 @@
         <span class="navbar__toggle-bar" aria-hidden="true"></span>
       </button>
 
-      <div class="navbar__menu" id="navbar-menu" role="navigation">
-        <ul class="navbar__links" role="menubar">
-          <li role="none"><a href="/" role="menuitem">Home</a></li>
-          <li role="none"><a href="/workers" role="menuitem">Find Workers</a></li>
-          <li role="none"><a href="/become-a-worker" role="menuitem">Become a Worker</a></li>
-          <li role="none"><a href="/about" role="menuitem">About</a></li>
+      <div class="navbar__menu" id="navbar-menu">
+        <ul class="navbar__links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/workers" aria-current="page">Find Workers</a></li>
+          <li><a href="/become-a-worker">Become a Worker</a></li>
+          <li><a href="/about">About</a></li>
         </ul>
 
-        <div class="navbar__actions">
-          <a href="#" class="btn btn--ghost">Login</a>
-          <a href="#" class="btn btn--outline">Register</a>
+        <div class="navbar__actions" data-auth-actions>
+          <a href="/login" class="btn btn--ghost">Login</a>
+          <a href="/register" class="btn btn--outline">Register</a>
           <a href="/workers" class="btn btn--primary">Hire a Worker</a>
         </div>
       </div>
@@ -50,10 +56,10 @@
     <div class="workers-container">
       <header class="workers-page-header">
         <h1>Find Local Workers</h1>
-        <p>Connect with verified skilled and casual workers ready to help in your area.</p>
+        <p>Connect with skilled and casual workers in your area. Look for the Verified badge for team-checked profiles.</p>
       </header>
 
-      <!-- Filter bar with three fields -->
+      <!-- Filter bar with trade, location with datalist, and available-now checkbox -->
       <form class="workers-filter-bar" id="workers-filter-form" role="search" aria-label="Filter workers">
         <div class="filter-group">
           <label for="filter-trade" class="filter-group__label">Trade</label>
@@ -72,7 +78,13 @@
 
         <div class="filter-group">
           <label for="filter-location" class="filter-group__label">Location</label>
-          <input type="text" id="filter-location" name="location" class="filter-group__control filter-group__input" placeholder="e.g. Kisumu, Nairobi">
+          <input type="text" id="filter-location" name="location" list="kenya-cities" class="filter-group__control filter-group__input" placeholder="e.g. Kisumu, Nairobi">
+          <datalist id="kenya-cities">
+            <option value="Kisumu"></option>
+            <option value="Nairobi"></option>
+            <option value="Mombasa"></option>
+            <option value="Nakuru"></option>
+          </datalist>
         </div>
 
         <div class="filter-group filter-group--checkbox">
@@ -87,11 +99,19 @@
         </div>
       </form>
 
-      <!-- Results summary area -->
-      <div class="workers-results-summary" id="results-summary" aria-live="polite">Loading…</div>
+      <!-- Active filter chips container -->
+      <div class="active-filters" id="active-filters" aria-label="Active filters" hidden></div>
 
-      <!-- Empty worker grid container, to be populated by JS -->
+      <!-- Results summary area (aria-live region for screen readers) -->
+      <div class="workers-results-summary" id="results-summary" aria-live="polite">Searching for workers…</div>
+
+      <!-- Worker grid container populated by JS -->
       <ul class="worker-grid" id="workers-grid" role="list"></ul>
+
+      <!-- Client-side Show More container -->
+      <div class="show-more-container" id="show-more-container" hidden>
+        <button type="button" class="btn btn--outline" id="show-more-btn">Show more</button>
+      </div>
 
       <!-- Empty-state block (hidden by default) for zero matching results -->
       <div class="workers-state-block workers-state-block--empty" id="empty-state" hidden>
@@ -136,16 +156,19 @@
     <div class="site-footer__social">
       <h3>Follow</h3>
       <ul class="social-icons">
-        <li><a href="#" aria-label="TrustWera on Facebook">FB</a></li>
-        <li><a href="#" aria-label="TrustWera on Instagram">IG</a></li>
-        <li><a href="#" aria-label="TrustWera on X">X</a></li>
+        <li><a href="https://facebook.com/trustwera" target="_blank" rel="noopener noreferrer" aria-label="TrustWera on Facebook">FB</a></li>
+        <li><a href="https://instagram.com/trustwera" target="_blank" rel="noopener noreferrer" aria-label="TrustWera on Instagram">IG</a></li>
+        <li><a href="https://x.com/trustwera" target="_blank" rel="noopener noreferrer" aria-label="TrustWera on X">X</a></li>
       </ul>
     </div>
 
     <p class="site-footer__copyright">&copy; 2026 TrustWera. Built for local communities.</p>
   </footer>
 
-  <script src="/assets/js/script.js" defer></script>
+  <script src="/assets/js/config.js" defer></script>
+  <script src="/assets/js/api.js" defer></script>
+  <script src="/assets/js/worker-card.js" defer></script>
   <script src="/assets/js/workers.js" defer></script>
+  <script src="/assets/js/script.js" defer></script>
 </body>
 </html>

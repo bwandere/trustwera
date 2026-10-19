@@ -129,7 +129,13 @@
     if (!response.ok) {
       let message = 'Request failed with status ' + response.status;
       if (parsedData && typeof parsedData === 'object' && parsedData.error) {
-        message = String(parsedData.error);
+        if (typeof parsedData.error === 'string') {
+          message = parsedData.error;
+        } else if (typeof parsedData.error === 'object' && parsedData.error.message) {
+          message = String(parsedData.error.message);
+        } else {
+          message = 'Server error. Please try again shortly.';
+        }
       } else if (response.status === 404) {
         message = 'The requested resource was not found.';
       } else if (response.status === 409) {

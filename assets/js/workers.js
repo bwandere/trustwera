@@ -326,7 +326,7 @@
         return; // Caller cancelled or a newer request was dispatched
       }
       console.error('Failed to fetch workers:', err);
-      const userMessage = err.message && !err.isNetworkError
+      const userMessage = err.message && !err.isNetworkError && (!err.status || err.status < 500) && err.message !== '[object Object]'
         ? err.message
         : "Couldn't load workers right now — try again shortly";
       setErrorState(userMessage);

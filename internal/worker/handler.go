@@ -63,6 +63,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 // Create handles POST /api/workers.
 // It decodes the JSON body, validates the input, and registers a new worker profile.
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
+	r.Body = http.MaxBytesReader(w, r.Body, 1<<20)
 	var input RegisterWorkerInput
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")

@@ -5,10 +5,17 @@ This is **not** a freelancing marketplace like Fiverr or Upwork. It's
 deliberately scoped to one problem: helping a local community find and trust
 each other for everyday work.
  
-## Current Milestone: Landing Page
- 
-Only the landing page exists so far. No login, registration, database,
-authentication, APIs, or search — those come in later milestones.
+## Current Milestone: Backend API & Frontend Workers Directory
+
+The landing page and Find Workers directory are built, featuring live search filters, active filter chips, and responsive pagination. The Go backend API (`/api/workers`) with PostgreSQL support is implemented. Placeholder pages are in place for worker profiles and upcoming auth/registration flows.
+
+## Deploying the Frontend to Vercel
+
+The static frontend is configured for deployment to Vercel:
+- **Root-level Static Deployment**: No build command, no framework preset (configured as "Other"), serving static assets directly from repository root.
+- **Configuration (`vercel.json`)**: Configured with `cleanUrls: true`, asset caching, and security headers (`X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`).
+- **API Proxying**: Requests to `/api/*` are proxied to the external Go API via rewrite rules in `vercel.json`. The frontend uses relative paths (`API_BASE: ''`), keeping the browser on the same origin to eliminate CORS issues.
+- **Backend Hosting Requirement**: The Go backend (`cmd/api`) requires a persistent runtime with PostgreSQL (e.g., Render, Fly.io, or Railway) and cannot run serverlessly on Vercel.
  
 ## Project Structure
  

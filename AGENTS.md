@@ -30,6 +30,10 @@ this file is the condensed, current-state version of it.
 - Frontend: vanilla HTML/CSS/JS, mobile-first, low-bandwidth. No framework.
 - Migrations: plain forward-only `.sql` files in `db/migrations/`, run
   manually via `psql`/`docker exec` — no migration library yet.
+- Deployment: Static frontend deploys to Vercel with clean URLs, security headers,
+  and an `/api/*` proxy rewrite pointing to the externally-hosted Go backend. The Go
+  server (`cmd/api`) requires persistent hosting with PostgreSQL (e.g. Render,
+  Fly.io, Railway) and cannot run serverlessly on Vercel.
 
 ## Repo structure (current + planned)
 

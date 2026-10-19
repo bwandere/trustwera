@@ -8,7 +8,7 @@
     },
     {
       "source": "/workers/:id",
-      "destination": "/workers/profile.html"
+      "destination": "/workers/profile"
     }
   ],
   "headers": [

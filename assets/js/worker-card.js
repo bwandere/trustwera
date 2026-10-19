@@ -70,12 +70,20 @@
     card.className = 'worker-card';
     card.setAttribute('role', 'listitem');
 
-    const name = worker.full_name && worker.full_name.trim() !== ''
-      ? worker.full_name.trim()
-      : 'Worker Profile';
-
     const skills = Array.isArray(worker.skills) ? worker.skills : [];
     const primarySkillName = skills.length > 0 ? formatSkill(skills[0].name) : 'General Worker';
+
+    const locationArea = worker.location_area && worker.location_area.trim() !== ''
+      ? worker.location_area.trim()
+      : 'Kenya';
+
+    const locationDisplay = worker.location_area && worker.location_area.trim() !== ''
+      ? worker.location_area.trim()
+      : 'Location on request';
+
+    const name = worker.full_name && worker.full_name.trim() !== ''
+      ? worker.full_name.trim()
+      : `${primarySkillName} in ${locationArea}`;
 
     // Avatar
     const avatarHTML = worker.profile_photo_url
@@ -86,11 +94,6 @@
     const verifiedBadgeHTML = worker.is_verified
       ? `<span class="badge badge--verified" title="Checked by the TrustWera team"><svg class="badge__icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M10 3L4.5 8.5L2 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Verified</span>`
       : '';
-
-    // Location
-    const locationArea = worker.location_area && worker.location_area.trim() !== ''
-      ? worker.location_area.trim()
-      : 'Location on request';
 
     // Experience
     let experienceHTML = '';
@@ -138,7 +141,7 @@
           <p class="worker-card__primary-skill">${escapeHTML(primarySkillName)}</p>
           <p class="worker-card__location">
             <svg class="meta-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span>${escapeHTML(locationArea)}</span>
+            <span>${escapeHTML(locationDisplay)}</span>
           </p>
         </div>
       </div>
